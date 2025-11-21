@@ -1,0 +1,6 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main cursor arrow rotated to 2:00 position (90 degrees) -->
+  <g transform="translate(16 16) rotate(90) translate(-11 -13)">
+    <path d="M2 2 L2 24 L8 18 L12 28 L16 26 L12 16 L20 16 Z" fill="black"/>
+  </g>
+</svg>

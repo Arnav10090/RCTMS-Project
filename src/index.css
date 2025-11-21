@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Industrial Roll Coolant Monitoring System Design System */
+
+@layer base {
+  :root {
+    /* Industrial Color Palette */
+    --background: 0 0% 100%;
+    --foreground: 215 25% 27%;
+
+    /* Industrial Steel Blue Theme */
+    --primary: 218 100% 25%;
+    /* Deep steel blue #1e3a8a */
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 218 100% 20%;
+
+    /* Bright Cyan Accents */
+    --secondary: 191 100% 42%;
+    /* Bright cyan #06b6d4 */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 191 100% 35%;
+
+    /* Status Colors */
+    --success: 158 64% 52%;
+    /* Vibrant green #10b981 */
+    --success-foreground: 0 0% 100%;
+    --warning: 43 96% 56%;
+    /* Amber #f59e0b */
+    --warning-foreground: 0 0% 100%;
+    --danger: 0 84% 60%;
+    /* Crimson #ef4444 */
+    --danger-foreground: 0 0% 100%;
+
+    /* Industrial Grays */
+    --muted: 210 40% 98%;
+    /* Subtle gray #f8fafc */
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 215 25% 27%;
+
+    /* Cards and Components */
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 27%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
+
+    /* Borders and Inputs */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 191 100% 42%;
+
+    /* Component Settings */
+    --radius: 0.375rem;
+
+    /* Industrial Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(218 100% 25%), hsl(191 100% 42%));
+    --gradient-success: linear-gradient(135deg, hsl(158 64% 52%), hsl(142 71% 45%));
+    --gradient-warning: linear-gradient(135deg, hsl(43 96% 56%), hsl(38 92% 50%));
+    --gradient-danger: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 72% 51%));
+
+    /* Shadows for Industrial Depth */
+    --shadow-industrial: 0 4px 6px -1px hsl(218 100% 25% / 0.1), 0 2px 4px -1px hsl(218 100% 25% / 0.06);
+    --shadow-elevated: 0 10px 15px -3px hsl(218 100% 25% / 0.1), 0 4px 6px -2px hsl(218 100% 25% / 0.05);
+    --shadow-glow: 0 0 20px hsl(191 100% 42% / 0.3);
+
+    /* Animations */
+    --transition-industrial: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --pulse-duration: 2s;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Industrial Dark Mode */
+    --background: 218 100% 8%;
+    /* Dark steel blue background */
+    --foreground: 210 40% 98%;
+
+    /* Industrial Steel Blue Theme - Dark Mode */
+    --primary: 191 100% 42%;
+    /* Bright cyan becomes primary in dark */
+    --primary-foreground: 218 100% 8%;
+    --primary-hover: 191 100% 35%;
+
+    /* Secondary becomes darker blue */
+    --secondary: 218 100% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hover: 218 100% 20%;
+
+    /* Status Colors - Dark Mode */
+    --success: 158 64% 52%;
+    --success-foreground: 0 0% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 0 0% 100%;
+    --danger: 0 84% 60%;
+    --danger-foreground: 0 0% 100%;
+
+    /* Industrial Grays - Dark Mode */
+    --muted: 218 100% 12%;
+    --muted-foreground: 215 16% 65%;
+    --accent: 218 100% 15%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Cards and Components - Dark Mode */
+    --card: 218 100% 10%;
+    --card-foreground: 210 40% 98%;
+    --popover: 218 100% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Borders and Inputs - Dark Mode */
+    --border: 218 50% 20%;
+    --input: 218 50% 20%;
+    --ring: 191 100% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* When sidebar is collapsed, reduce horizontal padding in operation table */
+.sidebar-collapsed .reduce-gap th,
+.sidebar-collapsed .reduce-gap td {
+  padding-left: 0.375rem !important;
+  padding-right: 0.375rem !important;
+}
+
+/* Tighter spacing for operation column when sidebar collapsed */
+.sidebar-collapsed .reduce-gap th.op-col,
+.sidebar-collapsed .reduce-gap td.operation {
+  width: 9rem !important;
+  padding-left: 0rem !important;
+  padding-right: 0rem !important;
+}
+
+/* Minimize padding on description column */
+.sidebar-collapsed .reduce-gap td.desc-col {
+  padding-right: 0rem !important;
+  padding-left: 0.375rem !important;
+}
+
+/* Reduce gap in SN column when sidebar collapsed */
+.sidebar-collapsed .reduce-gap td:first-child,
+.sidebar-collapsed .reduce-gap th:first-child {
+  padding-right: 0.25rem !important;
+  padding-left: 0.5rem !important;
+}
+
+/* Tighten the button group spacing */
+.sidebar-collapsed .reduce-gap .btn-group {
+  gap: 0.375rem !important;
+}
+
+/* Reduce Mode column padding */
+.sidebar-collapsed .reduce-gap td:nth-child(4),
+.sidebar-collapsed .reduce-gap th:nth-child(4) {
+  padding-left: 0.25rem !important;
+  padding-right: 0.25rem !important;
+}
+
+/* Ensure equal columns and prevent overlap */
+.reduce-gap {
+  --col-count: 8;
+}
+
+.reduce-gap table {
+  table-layout: fixed; /* ensure equal width columns when using colgroup */
+  width: 100%;
+}
+
+.reduce-gap td, .reduce-gap th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reduce-gap .btn-group button {
+  padding: 0.25rem 0.4rem !important;
+  font-size: 0.675rem !important;
+  line-height: 1 !important;
+  white-space: nowrap;
+}
+
+/* slightly reduce horizontal padding for table cells globally to prevent wrapping */
+.reduce-gap .px-3 { padding-left: 0.5rem; padding-right: 0.5rem; }
+
+/* ensure header row centered remains */
+.reduce-gap thead th { vertical-align: middle; }

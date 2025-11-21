@@ -1,0 +1,15 @@
+<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Key background -->
+  <rect x="5" y="10" width="70" height="50" 
+        fill="white" 
+        stroke="black" 
+        stroke-width="2"/>
+  
+  <!-- Text LT -->
+  <text x="40" y="40" 
+        font-family="Arial, sans-serif" 
+        font-size="20" 
+        font-weight="normal" 
+        text-anchor="middle" 
+        fill="black">FT#2</text>
+</svg>

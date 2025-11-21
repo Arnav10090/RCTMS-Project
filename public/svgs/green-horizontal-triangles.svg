@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="200">
+  <!-- Left triangle (rotated 180 degrees) -->
+  <polygon points="50,50 10,20 10,80" fill="lime" stroke="black" stroke-width="2" stroke-linejoin="miter"/>
+  
+  <!-- Right triangle (rotated 180 degrees) -->
+  <polygon points="50,50 90,20 90,80" fill="lime" stroke="black" stroke-width="2" stroke-linejoin="miter"/>
+</svg>

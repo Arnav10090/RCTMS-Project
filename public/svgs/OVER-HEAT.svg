@@ -1,0 +1,23 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Box border -->
+  <rect x="10" y="10" width="80" height="60" 
+        fill="white" 
+        stroke="black" 
+        stroke-width="2"/>
+  
+  <!-- Text OVER -->
+  <text x="50" y="35" 
+        font-family="Arial, sans-serif" 
+        font-size="16" 
+        font-weight="normal" 
+        text-anchor="middle" 
+        fill="black">OVER</text>
+  
+  <!-- Text HEAT -->
+  <text x="50" y="54" 
+        font-family="Arial, sans-serif" 
+        font-size="16" 
+        font-weight="normal" 
+        text-anchor="middle" 
+        fill="black">HEAT</text>
+</svg>

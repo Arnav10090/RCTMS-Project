@@ -50,7 +50,7 @@ export const Overview = () => {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-        <DataCard title="Running Coil Data" icon={Activity} variant="primary">
+        <DataCard title="Running Coil Data" icon={Activity}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Coil ID:</span>
@@ -71,7 +71,7 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Roll Coolant Parameters" icon={Droplet} variant="success">
+        <DataCard title="Roll Coolant Parameters" icon={Droplet}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Tank Level:</span>

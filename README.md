@@ -252,39 +252,6 @@ RCTMS_Project/
 
 ---
 
-## 📊 Real-time Data Flow
-
-```
-┌─────────────────────────────────────────────────────────┐
-│         Industrial Sensors & SCADA Systems              │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│      Backend API (Node.js / Express.js)                 │
-│  - RESTful endpoints                                    │
-│  - Multi-threaded data polling                          │
-│  - Asynchronous metric processing                       │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│   TanStack Query (Caching & State Management)           │
-│  - Intelligent caching                                  │
-│  - Background refetching                                │
-│  - Automatic synchronization                            │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│        React Components (Real-time Display)             │
-│  - Dashboard metrics                                    │
-│  - Live gauge visualizations                            │
-│  - Alarm notifications                                  │
-│  - Equipment status updates                             │
-└─────────────────────────────────────────────────────────┘
-```
-
 ---
 
 ## 🚨 Alarm Management System
@@ -304,18 +271,3 @@ RCTMS_Project/
 6. **History** - Complete audit trail maintained
 
 ---
-
-<div align="center">
-
-### 🚀 Ready to Monitor Your Industrial Systems?
-
-[🔼 Back to Top](#-roll-coolant-tank-monitoring-system-rctms)
-
-**Built with ❤️ during Internship | Powered by Modern Web Technologies**
-
-![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
-![Tailwind](https://img.shields.io/badge/-TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white)
-![Vite](https://img.shields.io/badge/-Vite-646CFF?logo=vite&logoColor=white)
-
-</div>

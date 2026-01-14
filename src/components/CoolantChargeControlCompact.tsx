@@ -141,6 +141,8 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
     clearTimer();
     setChargeProgress(0);
     setChargeState('idle');
+    setAddedOilVolume(0);
+    setAddedWaterVolume(0);
     // Reset desired concentration and target volume to 0 after charging is complete
     if (chargeProgress >= 100) {
       setDesiredConcentration(0);

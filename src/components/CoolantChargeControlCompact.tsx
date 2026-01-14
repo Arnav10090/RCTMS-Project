@@ -246,11 +246,11 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
               </tr>
               <tr className="border-t border-border/80">
                 <td className="py-0.5 px-1">
-                  <Button 
-                    size="sm" 
-                    variant="destructive" 
-                    onClick={stopCharging} 
-                    disabled={chargeState !== 'charging'} 
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={handleStopClick}
+                    disabled={chargeState !== 'charging'}
                     className="h-6 text-[11px] px-1.5 w-full"
                   >
                     <Square className="h-3 w-3 mr-0.5" />

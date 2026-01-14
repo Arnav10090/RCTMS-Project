@@ -60,7 +60,7 @@ export const Overview = () => {
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
         <DataCard title="Running Coil Data" icon={Activity}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">

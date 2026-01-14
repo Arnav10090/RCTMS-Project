@@ -271,7 +271,7 @@ export const Overview = () => {
             <CoolantChargeControlCompact />
           </div>
 
-          <DataCard title="Roll Coolant System" icon={Droplet}>
+          <DataCard title="Coolant Parameters" icon={Droplet}>
             <div className="space-y-2 text-xs">
               <div className="flex justify-between items-baseline">
                 <span className="text-muted-foreground">ESI Value:</span>

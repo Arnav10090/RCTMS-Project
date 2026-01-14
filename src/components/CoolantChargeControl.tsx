@@ -89,14 +89,13 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
      (READ-ONLY)
      ========================= */
   const currentConcentration = HARD_CODED_CURRENT_CONCENTRATION;
-  const baseCurrentVolume = HARD_CODED_CURRENT_VOLUME;
+  const currentVolume = HARD_CODED_CURRENT_VOLUME;
 
   /* =========================
      CHARGE STATE
      ========================= */
   const [chargeState, setChargeState] = useState<ChargeState>('idle');
   const [chargeProgress, setChargeProgress] = useState(0);
-  const [addedVolume, setAddedVolume] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const clearTimer = () => {
@@ -109,25 +108,15 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   const startCharging = () => {
     if (timerRef.current) return;
 
-    if (chargeProgress >= 100) {
-      setChargeProgress(0);
-      setAddedVolume(0);
-    }
+    if (chargeProgress >= 100) setChargeProgress(0);
 
     setChargeState('charging');
     timerRef.current = setInterval(() => {
       setChargeProgress((prev) => {
         const next = Math.min(prev + 5, 100);
-
-        // Calculate volume to be added based on progress
-        const volumeToAdd = targetVolume - baseCurrentVolume;
-        const newAddedVolume = (next / 100) * volumeToAdd;
-        setAddedVolume(newAddedVolume);
-
         if (next === 100) {
           clearTimer();
           setChargeState('complete');
-          setTargetVolume(0); // Reset target volume when complete
         }
         return next;
       });
@@ -142,7 +131,6 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   const resetCharging = () => {
     clearTimer();
     setChargeProgress(0);
-    setAddedVolume(0);
     setChargeState('idle');
   };
 
@@ -153,27 +141,16 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   /* =========================
      CALCULATIONS
      ========================= */
+  const oilToAdd = useMemo(() => {
+    const desiredOil = targetVolume * (desiredConcentration / 100);
+    const currentOil = currentVolume * (currentConcentration / 100);
+    return Math.max(desiredOil - currentOil, 0);
+  }, [desiredConcentration, currentConcentration, currentVolume, targetVolume]);
 
-  // Current volume increases as charging progresses
-  const currentVolume = baseCurrentVolume + addedVolume;
-
-  // Volume to be added = Target Volume - Current Volume (at start of charge)
-  const volumeToAdd = useMemo(
-    () => Math.max(targetVolume - baseCurrentVolume, 0),
-    [targetVolume, baseCurrentVolume]
-  );
-
-  // Oil volume = (Target Conc - Current Conc) * Volume to be added / 100
-  const oilToAdd = useMemo(
-    () => ((desiredConcentration - currentConcentration) * volumeToAdd) / 100,
-    [desiredConcentration, currentConcentration, volumeToAdd]
-  );
-
-  // Water volume = Volume to be added - Oil volume
-  const waterToAdd = useMemo(
-    () => Math.max(volumeToAdd - oilToAdd, 0),
-    [volumeToAdd, oilToAdd]
-  );
+  const waterToAdd = useMemo(() => {
+    const projected = targetVolume - (oilToAdd + currentVolume);
+    return Math.max(projected, 0);
+  }, [currentVolume, oilToAdd, targetVolume]);
 
   /* =========================
      HANDLERS

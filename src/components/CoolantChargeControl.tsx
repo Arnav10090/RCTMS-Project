@@ -89,13 +89,14 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
      (READ-ONLY)
      ========================= */
   const currentConcentration = HARD_CODED_CURRENT_CONCENTRATION;
-  const currentVolume = HARD_CODED_CURRENT_VOLUME;
+  const baseCurrentVolume = HARD_CODED_CURRENT_VOLUME;
 
   /* =========================
      CHARGE STATE
      ========================= */
   const [chargeState, setChargeState] = useState<ChargeState>('idle');
   const [chargeProgress, setChargeProgress] = useState(0);
+  const [addedVolume, setAddedVolume] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const clearTimer = () => {

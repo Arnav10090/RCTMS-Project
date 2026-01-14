@@ -13,7 +13,7 @@ import RollCoolantTank from '@/components/RollCoolantTank';
 /* =========================
    HARD-CODED SYSTEM VALUES
    ========================= */
-const HARD_CODED_CURRENT_CONCENTRATION = 7.9; // %
+const HARD_CODED_CURRENT_CONCENTRATION = 5.2; // %
 const HARD_CODED_CURRENT_VOLUME = 82; // m³
 
 interface CoolantChargeControlProps {

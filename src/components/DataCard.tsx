@@ -12,6 +12,7 @@ interface DataCardProps {
   variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger';
   tankLevel?: number;
   tankLevelUnit?: string;
+  tankLevelLiters?: number;
 }
 
 export const DataCard: React.FC<DataCardProps> = ({

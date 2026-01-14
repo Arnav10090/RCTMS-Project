@@ -263,6 +263,7 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
                     max={25}
                     step={0.1}
                     onValueChange={(values) => handleCurrentChange(values[0] ?? currentConcentration)}
+                    disabled={true}
                   />
                   <Input
                     id="current-concentration"
@@ -274,6 +275,7 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
                     step={0.1}
                     value={currentConcentration}
                     onChange={(event) => handleCurrentChange(Number(event.target.value))}
+                    disabled={true}
                   />
                   <p className="mt-2 text-xs text-muted-foreground">
                     Pull real-time readings or enter manual lab measurements for instant deviation awareness.

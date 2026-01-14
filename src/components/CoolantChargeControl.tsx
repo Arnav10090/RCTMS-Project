@@ -65,8 +65,8 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   );
 
   const [desiredConcentration, setDesiredConcentration] = useState(initialSettings.desiredConcentration);
-  const [currentConcentration, setCurrentConcentration] = useState(initialSettings.currentConcentration);
-  const [currentVolume, setCurrentVolume] = useState(initialSettings.currentVolume);
+  const currentConcentration = HARD_CODED_CURRENT_CONCENTRATION;
+  const currentVolume = HARD_CODED_CURRENT_VOLUME;
   const [targetVolume, setTargetVolume] = useState(initialSettings.targetVolume);
   const [chargeState, setChargeState] = useState<ChargeState>('idle');
   const [chargeProgress, setChargeProgress] = useState(0);
@@ -137,14 +137,6 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
 
   const handleDesiredChange = (value: number) => {
     setDesiredConcentration(clampNumber(value, 0, 25));
-  };
-
-  const handleCurrentChange = (value: number) => {
-    setCurrentConcentration(clampNumber(value, 0, 25));
-  };
-
-  const handleCurrentVolumeChange = (value: number) => {
-    setCurrentVolume(clampNumber(value, 0, 500));
   };
 
   const handleTargetVolumeChange = (value: number) => {

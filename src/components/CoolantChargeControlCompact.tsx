@@ -102,15 +102,24 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
 
     if (chargeProgress >= 100) {
       setChargeProgress(0);
+      setAddedOilVolume(0);
+      setAddedWaterVolume(0);
     }
 
     setChargeState('charging');
     timerRef.current = setInterval(() => {
       setChargeProgress((previous) => {
         const next = Math.min(previous + 5, 100);
+
+        // Calculate added volumes proportionally
+        setAddedOilVolume(Math.min((next / 100) * oilToAdd, oilToAdd));
+        setAddedWaterVolume(Math.min((next / 100) * waterToAdd, waterToAdd));
+
         if (next === 100) {
           clearTimer();
           setChargeState('complete');
+          setAddedOilVolume(oilToAdd);
+          setAddedWaterVolume(waterToAdd);
         }
         return next;
       });

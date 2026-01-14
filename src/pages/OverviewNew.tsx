@@ -128,12 +128,8 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="%">
+        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.auxiliaryHydraulic.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
-            <div className="flex justify-between items-baseline">
-              <span className="text-muted-foreground">Tank Level:</span>
-              <span className="font-mono">{systemData.auxiliaryHydraulic.tankLevel}%</span>
-            </div>
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
               <span className="font-mono">{systemData.auxiliaryHydraulic.pressure} bar</span>

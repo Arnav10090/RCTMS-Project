@@ -270,18 +270,9 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
                   <Label htmlFor="current-volume" className="text-xs uppercase tracking-wide text-muted-foreground">
                     Current Tank Volume (Vact)
                   </Label>
-                  <Input
-                    id="current-volume"
-                    className="mt-3"
-                    type="number"
-                    inputMode="decimal"
-                    min={0}
-                    max={500}
-                    step={0.5}
-                    value={currentVolume}
-                    onChange={(event) => handleCurrentVolumeChange(Number(event.target.value))}
-                    disabled={true}
-                  />
+                  <div className="mt-3 p-3 rounded-lg bg-muted/50">
+                    <p className="text-2xl font-semibold">82</p>
+                  </div>
                   <p className="mt-2 text-xs text-muted-foreground">Volume estimated from level transmitters prior to charging.</p>
                 </div>
 

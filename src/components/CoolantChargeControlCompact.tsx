@@ -87,7 +87,13 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
     }
   };
 
-  const startCharging = () => {
+  const handleStartClick = () => {
+    setConfirmationAction('start');
+    setShowConfirmation(true);
+  };
+
+  const confirmStartCharging = () => {
+    setShowConfirmation(false);
     if (timerRef.current) {
       return;
     }
@@ -109,7 +115,13 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
     }, 1200);
   };
 
-  const stopCharging = () => {
+  const handleStopClick = () => {
+    setConfirmationAction('stop');
+    setShowConfirmation(true);
+  };
+
+  const confirmStopCharging = () => {
+    setShowConfirmation(false);
     clearTimer();
     setChargeState('stopped');
   };
@@ -118,6 +130,11 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
     clearTimer();
     setChargeProgress(0);
     setChargeState('idle');
+    // Reset desired concentration and target volume to 0 after charging is complete
+    if (chargeProgress >= 100) {
+      setDesiredConcentration(0);
+      setTargetVolume(0);
+    }
   };
 
   useEffect(() => {

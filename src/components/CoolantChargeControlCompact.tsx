@@ -79,6 +79,8 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationAction, setConfirmationAction] = useState<'start' | 'stop' | null>(null);
+  const [addedOilVolume, setAddedOilVolume] = useState(0);
+  const [addedWaterVolume, setAddedWaterVolume] = useState(0);
 
   const clearTimer = () => {
     if (timerRef.current) {

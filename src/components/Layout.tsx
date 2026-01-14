@@ -19,7 +19,7 @@ export const Layout = () => {
         />
         {location.pathname === '/oil-cellar' ? (
           <KpiStripOilCellar />
-        ) : location.pathname !== '/' && location.pathname !== '/overview-new' ? (
+        ) : location.pathname !== '/' && location.pathname !== '/overview-new' && location.pathname !== '/settings' ? (
           <KpiStrip />
         ) : null}
         <main className="flex-1 p-6 pb-14 overflow-auto">

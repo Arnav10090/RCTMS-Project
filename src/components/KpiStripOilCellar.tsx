@@ -83,42 +83,50 @@ export const KpiStripOilCellar: React.FC = () => {
           </div>
         </DataCard>
 
-        {/* Oil Cellar Status */}
-        <DataCard title="Oil Cellar Status" icon={CheckCircle} variant="primary">
-          <div className="space-y-2">
-            <div className="grid grid-cols-2 gap-2 text-sm mt-2">
-              <div className="text-xs text-muted-foreground">Person w/o PPE</div>
-              <div className="font-mono font-semibold text-foreground">{systemData.safety.withoutPPE}</div>
-
-              <div className="text-xs text-muted-foreground">No. of person entered</div>
-              <div className="font-mono font-semibold text-foreground">{systemData.safety.totalEntered}</div>
-
-              <div className="text-xs text-muted-foreground">Avg. AQI</div>
-              <div className="font-mono font-semibold text-foreground">{systemData.safety.averageAQI}</div>
-
-              <div className="text-xs text-muted-foreground">Humidity</div>
-              <div className="font-mono font-semibold text-foreground">{systemData.safety.humidity}%</div>
-
-              <div className="text-xs text-muted-foreground">Temp</div>
-              <div className="font-mono font-semibold text-foreground">{systemData.safety.temperature}°C</div>
-            </div>
-          </div>
-        </DataCard>
-
-        {/* Access Control */}
-        <DataCard title="Access Control" icon={Shield} variant="success">
-          <div className="space-y-3">
-            <div className="space-y-6">
-              <div>
-                <div className="text-xs text-muted-foreground">Fire Ext. system</div>
-                <div className="mt-1">
-                  <div className="h-5 w-12 rounded bg-success"></div>
+        {/* Oil Cellar Status & Access Control */}
+        <DataCard title="Oil Cellar Status & Access Control" icon={Shield} variant="primary" className="lg:col-span-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Oil Cellar Section */}
+            <div className="space-y-2 border-r border-border/50 pr-4">
+              <div className="font-semibold text-sm mb-3 text-muted-foreground">Oil Cellar Environment</div>
+              <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
+                <div>
+                  <div className="text-xs text-muted-foreground">Person w/o PPE</div>
+                  <div className="font-mono font-semibold text-foreground">{systemData.safety.withoutPPE}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">No. of person entered</div>
+                  <div className="font-mono font-semibold text-foreground">{systemData.safety.totalEntered}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Avg. AQI</div>
+                  <div className="font-mono font-semibold text-foreground">{systemData.safety.averageAQI}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Humidity</div>
+                  <div className="font-mono font-semibold text-foreground">{systemData.safety.humidity}%</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Temp</div>
+                  <div className="font-mono font-semibold text-foreground">{systemData.safety.temperature}°C</div>
                 </div>
               </div>
+            </div>
 
-              <div>
-                <div className="text-xs text-muted-foreground">Unsafe Acts Today</div>
-                <div className="font-mono font-semibold">{systemData.accessControl.unsafeActs}</div>
+            {/* Access Control Section */}
+            <div className="space-y-2 pl-2">
+              <div className="font-semibold text-sm mb-3 text-muted-foreground">Access Control System</div>
+              <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
+                <div>
+                  <div className="text-xs text-muted-foreground mb-1">Fire Ext. system</div>
+                  <div className={`px-2 py-1 rounded text-center text-xs font-bold ${systemData.accessControl.fireExtSystem === 'Active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                    {systemData.accessControl.fireExtSystem === 'Active' ? 'Healthy' : 'Unhealthy'}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Unsafe Acts Today</div>
+                  <div className="font-mono font-semibold text-foreground">{systemData.accessControl.unsafeActs}</div>
+                </div>
               </div>
             </div>
           </div>

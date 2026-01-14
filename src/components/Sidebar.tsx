@@ -20,7 +20,7 @@ export const navigationItems = [
   },
   {
     path: '/pumps',
-    name: 'Pump Operations',
+    name: 'Pump Status',
     icon: Cog,
     description: 'HMI-03'
   },
@@ -41,6 +41,12 @@ export const navigationItems = [
     name: 'Reports',
     icon: FileText,
     description: 'HMI-06'
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    icon: Cog,
+    description: 'Configuration'
   },
 ];
 

@@ -13,6 +13,7 @@ import { PumpOperations } from "./pages/PumpOperations";
 import { OilCellarMonitor } from "./pages/OilCellarMonitor";
 import AlarmManagement from "./pages/AlarmManagement";
 import { Reports } from "./pages/Reports";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="oil-cellar" element={<OilCellarMonitor />} />
             <Route path="alarms" element={<AlarmManagement />} />
             <Route path="reports" element={<Reports />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

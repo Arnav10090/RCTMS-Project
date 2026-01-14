@@ -25,9 +25,17 @@ interface Alarm {
   operator?: string;
 }
 
-const DataCard = ({ title, children, className = "" }: { title?: string; children: React.ReactNode; className?: string }) => (
+const DataCard = ({ title, value, children, className = "", headerActions }: { title?: string; value?: React.ReactNode; children: React.ReactNode; className?: string; headerActions?: React.ReactNode }) => (
   <Card className={`p-6 ${className}`}>
-    {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
+    {title && (
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <div className="flex items-center gap-3">
+          {value}
+          {headerActions}
+        </div>
+      </div>
+    )}
     {children}
   </Card>
 );
@@ -171,22 +179,40 @@ export default function AlarmManagement() {
     <div className="space-y-2 p-3 min-h-screen">
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <DataCard title="Total Alarms" className="text-center">
-          <div className="text-3xl font-bold text-blue-600">{alarmStats.total}</div>
+        <DataCard title="Total Alarms" value={<div className="text-3xl font-bold text-blue-600">{alarmStats.total}</div>}>
+          <div></div>
         </DataCard>
-        <DataCard title="Active Alarms" className="text-center">
-          <div className="text-3xl font-bold text-orange-600">{alarmStats.active}</div>
+        <DataCard title="Active Alarms" value={<div className="text-3xl font-bold text-orange-600">{alarmStats.active}</div>}>
+          <div></div>
         </DataCard>
-        <DataCard title="Critical Active" className="text-center">
-          <div className="text-3xl font-bold text-red-600">{alarmStats.critical}</div>
+        <DataCard title="Critical Active" value={<div className="text-3xl font-bold text-red-600">{alarmStats.critical}</div>}>
+          <div></div>
         </DataCard>
-        <DataCard title="Unacknowledged" className="text-center">
-          <div className="text-3xl font-bold text-red-600">{alarmStats.unacknowledged}</div>
+        <DataCard title="Unacknowledged" value={<div className="text-3xl font-bold text-red-600">{alarmStats.unacknowledged}</div>}>
+          <div></div>
         </DataCard>
       </div>
 
       {/* Filters */}
-      <DataCard title="Filters">
+      <DataCard 
+        title="Filters" 
+        headerActions={
+          <>
+            <span className="text-sm text-muted-foreground">
+              Showing {filteredAlarms.length} of {alarms.length} alarms
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExport}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Export CSV
+            </Button>
+          </>
+        }
+      >
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
@@ -229,60 +255,46 @@ export default function AlarmManagement() {
             </Select>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {hasActiveFilters && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={resetFilters}
-                  className="gap-2"
-                >
-                  <X className="h-4 w-4" />
-                  Clear Filters
-                </Button>
-              )}
-              <span className="text-sm text-muted-foreground">
-                Showing {filteredAlarms.length} of {alarms.length} alarms
-              </span>
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <div className="flex items-center">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={resetFilters}
+                className="gap-2"
+              >
+                <X className="h-4 w-4" />
+                Clear Filters
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExport}
-              className="gap-2"
-            >
-              <Download className="h-4 w-4" />
-              Export CSV
-            </Button>
-          </div>
+          )}
         </div>
       </DataCard>
 
       {/* Alarm Table */}
       <DataCard title="Alarms & Alerts" className="overflow-x-auto">
         <div className="min-w-full">
-          <div className="grid grid-cols-11 gap-2 pb-3 mb-4 border-b border-border text-xs font-semibold text-muted-foreground">
-            <div className="col-span-1">NO.</div>
-            <div className="col-span-3">ALARM LEVEL & NO. & MESSAGE</div>
-            <div className="col-span-2">DEVICE</div>
-            <div className="col-span-2">EVENT TIME</div>
-            <div className="col-span-2">RECOVERED TIME</div>
-            <div className="col-span-1 text-right">ACTIONS</div>
+          <div className="grid grid-cols-11 pb-3 mb-4 border-b border-gray-600 text-xs font-semibold text-muted-foreground">
+            <div className="col-span-1 border-r border-gray-600 pl-2">NO.</div>
+            <div className="col-span-3 border-r border-gray-600 pl-2">ALARM LEVEL & NO. & MESSAGE</div>
+            <div className="col-span-2 border-r border-gray-600 pl-2">DEVICE</div>
+            <div className="col-span-2 border-r border-gray-600 pl-2">EVENT TIME</div>
+            <div className="col-span-2 border-r border-gray-600 pl-2">RECOVERED TIME</div>
+            <div className="col-span-1 text-right pr-2">ACTIONS</div>
           </div>
 
           {paginatedAlarms.map((alarm, idx) => (
             <div
               key={alarm.id}
-              className="grid grid-cols-11 gap-2 py-3 border-b border-border/50 text-sm transition-colors hover:bg-muted/10"
+              className="grid grid-cols-11 py-3 border-b border-gray-600 text-sm transition-colors hover:bg-muted/10 items-center"
             >
-              <div className="col-span-1 font-mono text-muted-foreground">
+              <div className="col-span-1 font-mono text-muted-foreground border-r border-gray-600 pl-2 h-full flex items-center">
                 {(startIndex + idx + 1).toString().padStart(2, '0')}
               </div>
 
-              <div className="col-span-3">
-                <div className="space-y-1">
+              <div className="col-span-3 border-r border-gray-600 pl-2 pr-2 h-full flex items-center">
+                <div className="space-y-1 w-full">
                   <div className="flex items-center space-x-2">
                     <span className={`px-2 py-1 rounded text-xs font-medium border ${getLevelColor(alarm.level)}`}>
                       {alarm.level.toUpperCase()}
@@ -290,25 +302,25 @@ export default function AlarmManagement() {
                     <span className="font-mono text-xs text-muted-foreground">{alarm.alarmNo}</span>
                     {getStatusIcon(alarm)}
                   </div>
-                  <div className="text-sm font-medium text-foreground">{alarm.message}</div>
+                  <div className="text-sm font-medium text-foreground truncate">{alarm.message}</div>
                 </div>
               </div>
 
-              <div className="col-span-2 font-mono text-muted-foreground">
+              <div className="col-span-2 font-mono text-muted-foreground border-r border-gray-600 pl-2 h-full flex items-center">
                 {alarm.device}
               </div>
 
-              <div className="col-span-2 font-mono text-xs text-muted-foreground">
+              <div className="col-span-2 font-mono text-xs text-muted-foreground border-r border-gray-600 pl-2 h-full flex items-center">
                 {alarm.eventTime}
               </div>
 
-              <div className="col-span-2 font-mono text-xs text-muted-foreground">
+              <div className="col-span-2 font-mono text-xs text-muted-foreground border-r border-gray-600 pl-2 h-full flex items-center">
                 {alarm.recoveredTime || (
                   <span className="text-muted-foreground">Not recovered</span>
                 )}
               </div>
 
-              <div className="col-span-1 flex items-start justify-end">
+              <div className="col-span-1 flex items-start justify-end pr-2">
                 <Button
                   variant="outline"
                   size="sm"

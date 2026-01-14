@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { Line, LineChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { format, startOfWeek, addDays, startOfMonth, getDaysInMonth } from 'date-fns';
 
 export const OilCellarMonitor = () => {
@@ -257,8 +257,7 @@ export const OilCellarMonitor = () => {
                         <Button 
                           size="sm" 
                           variant={lighting[cIdx] ? 'default' : 'outline'} 
-                          onClick={() => toggleCell('lighting', cIdx)}
-                          className="w-16"
+                          className="w-16 pointer-events-none"
                         >
                           {lighting[cIdx] ? 'ON' : 'OFF'}
                         </Button>
@@ -302,13 +301,13 @@ export const OilCellarMonitor = () => {
             config={{ value: { label: paramLabel(selectedParam, range), color: 'hsl(var(--primary))' } }}
             className="w-full h-[280px]"
           >
-            <BarChart data={data} margin={{ left: 12, right: 12, top: 10, bottom: 10 }}>
+            <LineChart data={data} margin={{ left: 12, right: 12, top: 10, bottom: 10 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="label" tickLine={false} axisLine={false} style={{ fontSize: 11 }} />
               <YAxis tickLine={false} axisLine={false} width={40} style={{ fontSize: 11 }} />
-              <ChartTooltip cursor={{ fill: 'hsl(var(--muted)/.4)' }} content={<ChartTooltipContent />} />
-              <Bar dataKey="value" fill="var(--color-value)" radius={[6, 6, 0, 0]} />
-            </BarChart>
+              <ChartTooltip cursor={{ stroke: 'hsl(var(--muted))', strokeWidth: 1 }} content={<ChartTooltipContent />} />
+              <Line type="monotone" dataKey="value" stroke="var(--color-value)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+            </LineChart>
           </ChartContainer>
         </DataCard>
       </div>

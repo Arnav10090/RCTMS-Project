@@ -2,7 +2,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
-import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, X, FileText, FileSpreadsheet } from 'lucide-react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 type TableKey = 'coolant' | 'oilCellar' | 'rollPumps' | 'hpPumps';
 
@@ -159,6 +161,7 @@ function genPumps(n = 30): PumpRow[] {
 type HpPumpRow = {
   id: number;
   date: string;
+  pumpType: string;
   pumpNo: string;
   status: string;
   runHrs: string;
@@ -173,12 +176,15 @@ type HpPumpRow = {
 function genHpPumps(n = 30): HpPumpRow[] {
   const today = new Date();
   const oilClasses = ['ISO 18/16/13', 'ISO 17/15/12', 'ISO 19/17/14'];
+  const pumpTypes = ['Main Hydraulic Pump', 'Auxiliary hyd pump', 'Gear lub pump'];
   const rows: HpPumpRow[] = [];
   for (let i = 0; i < n; i++) {
     const date = toISODate(new Date(today.getTime() - i * 86400000));
+    const pumpType = pumpTypes[Math.floor(Math.random() * pumpTypes.length)];
     rows.push({
       id: i * 2 + 1,
       date,
+      pumpType,
       pumpNo: '#1',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
@@ -192,6 +198,7 @@ function genHpPumps(n = 30): HpPumpRow[] {
     rows.push({
       id: i * 2 + 2,
       date,
+      pumpType,
       pumpNo: '#2',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
@@ -213,6 +220,10 @@ type TableSectionProps = {
   headers: string[];
   renderRow: (item: any, idx: number, startIdx: number) => React.ReactNode;
   renderHeader?: (headers: string[]) => React.ReactNode;
+  filterOptions?: { label: string; value: string }[];
+  filterKey?: string;
+  filterLabel?: string;
+  getRowData?: (item: any, idx: number, startIdx: number) => any[];
 };
 
 const TableSection = ({
@@ -220,22 +231,83 @@ const TableSection = ({
   data,
   headers,
   renderRow,
-  renderHeader
+  renderHeader,
+  filterOptions,
+  filterKey,
+  filterLabel,
+  getRowData
 }: TableSectionProps) => {
   const [search, setSearch] = React.useState('');
   const [from, setFrom] = React.useState<string>('');
   const [to, setTo] = React.useState<string>('');
+  const [customFilter, setCustomFilter] = React.useState<string>('all');
 
   const searcher = (row: Record<string, any>) =>
     search.trim() === '' || Object.values(row).some((v) => String(v).toLowerCase().includes(search.toLowerCase()));
 
-  const filtered = data.filter((r) => withinRange(r.date, from || undefined, to || undefined) && searcher(r));
+  const filtered = data.filter((r) => {
+    const dateMatch = withinRange(r.date, from || undefined, to || undefined);
+    const searchMatch = searcher(r);
+    const filterMatch = !filterKey || !filterOptions || customFilter === 'all' || r[filterKey] === customFilter;
+    return dateMatch && searchMatch && filterMatch;
+  });
   const pager = usePager(filtered, 10);
 
   // Reset to first page when filters change
   React.useEffect(() => {
     pager.setPage(1);
-  }, [search, from, to]);
+  }, [search, from, to, customFilter]);
+
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    doc.text(title, 14, 15);
+    
+    const tableBody = filtered.map((row, idx) => {
+      if (getRowData) {
+        return getRowData(row, idx, 0);
+      }
+      // Fallback: exclude id and return values
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...rest } = row;
+      return Object.values(rest);
+    });
+
+    autoTable(doc, {
+      head: [headers],
+      body: tableBody,
+      startY: 20,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [22, 163, 74] } // Green-600ish
+    });
+
+    doc.save(`${title.replace(/\s+/g, '_')}_${toISODate(new Date())}.pdf`);
+  };
+
+  const handleExportExcel = () => {
+    // CSV Export
+    const rows = filtered.map((row, idx) => {
+      if (getRowData) {
+        return getRowData(row, idx, 0);
+      }
+      // Fallback: exclude id and return values
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...rest } = row;
+      return Object.values(rest);
+    });
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r => r.map(c => `"${c}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${title.replace(/\s+/g, '_')}_${toISODate(new Date())}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="bg-card rounded-lg border border-border shadow-sm">
@@ -297,15 +369,56 @@ const TableSection = ({
             </Select>
           </div>
 
-          {/* Reset */}
-          <Button
-            variant="outline"
-            onClick={() => { setSearch(''); setFrom(''); setTo(''); }}
-            className="gap-2"
-          >
-            <X className="h-4 w-4" />
-            Reset
-          </Button>
+          {/* Custom Filter (if provided) */}
+          {filterOptions && filterKey && filterLabel && (
+            <div className="w-48">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">{filterLabel}</label>
+              <Select value={customFilter} onValueChange={setCustomFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  {filterOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="flex items-end gap-2 ml-auto">
+            <Button
+              variant="outline"
+              onClick={handleExportPDF}
+              className="gap-2"
+              title="Export PDF"
+            >
+              <FileText className="h-4 w-4 text-red-600" />
+              PDF
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleExportExcel}
+              className="gap-2"
+              title="Export Excel"
+            >
+              <FileSpreadsheet className="h-4 w-4 text-green-600" />
+              Excel
+            </Button>
+            
+            <Button
+              variant="outline"
+              onClick={() => { setSearch(''); setFrom(''); setTo(''); setCustomFilter('all'); }}
+              className="gap-2"
+            >
+              <X className="h-4 w-4" />
+              Reset
+            </Button>
+          </div>
         </div>
 
         {/* Results count */}
@@ -323,7 +436,7 @@ const TableSection = ({
             ) : (
               <tr>
                 {headers.map((header, idx) => (
-                  <th key={idx} className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">
+                  <th key={idx} className="px-4 py-3 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap border-r border-gray-600 last:border-r-0">
                     {header}
                   </th>
                 ))}
@@ -452,17 +565,29 @@ export const Reports = () => {
               'Saponification Value (mmKOH/GM)',
               'Tank Lvl kL'
             ]}
+            getRowData={(r: CoolantRow, idx) => [
+              idx + 1,
+              r.date,
+              r.oilConc,
+              r.conductivity,
+              r.pH,
+              r.tempC,
+              r.esi,
+              r.tramp,
+              r.saponification,
+              r.tankLvl
+            ]}
             renderRow={(r: CoolantRow, idx, start) => (
-              <tr key={r.id} className="hover:bg-muted/50">
-                <td className="px-4 py-3 text-sm text-foreground text-center">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.oilConc}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.conductivity}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.pH}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.tempC}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.esi}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.tramp}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.saponification}</td>
+              <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.oilConc}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.conductivity}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.pH}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.tempC}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.esi}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.tramp}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.saponification}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center">{r.tankLvl}</td>
               </tr>
             )}
@@ -495,9 +620,31 @@ export const Reports = () => {
               'Inspection Status',
               'Next Insp. Due'
             ]}
+            getRowData={(r: OilCellarRow, idx) => [
+              idx + 1,
+              r.date,
+              r.tempC,
+              r.humidity,
+              r.aqiA1,
+              r.aqiA2,
+              r.aqiA3,
+              r.accessControl,
+              r.personsEntered,
+              r.noPpe,
+              r.welding,
+              r.cutting,
+              r.others,
+              r.illumA1,
+              r.illumA2,
+              r.illumA3,
+              r.illumA4,
+              r.illumA5,
+              r.fireStatus,
+              r.fireNextDue
+            ]}
             renderHeader={() => {
-              const topCellClass = "border border-border px-3 py-2 text-xs font-semibold text-muted-foreground text-center whitespace-nowrap align-middle";
-              const subCellClass = "border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground text-center whitespace-nowrap";
+              const topCellClass = "border border-gray-600 px-3 py-2 text-xs font-semibold text-muted-foreground text-center whitespace-nowrap align-middle";
+              const subCellClass = "border border-gray-600 px-3 py-1.5 text-xs font-medium text-muted-foreground text-center whitespace-nowrap";
               return (
                 <>
                   <tr>
@@ -535,26 +682,26 @@ export const Reports = () => {
               );
             }}
             renderRow={(r: OilCellarRow, idx, start) => (
-              <tr key={r.id} className="hover:bg-muted/50">
-                <td className="px-4 py-3 text-sm text-foreground text-center">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.tempC}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.humidity}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.aqiA1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.aqiA2}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.aqiA3}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.accessControl}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.personsEntered}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.noPpe}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.welding}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.cutting}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.others}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.illumA1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.illumA2}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.illumA3}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.illumA4}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.illumA5}</td>
-                <td className="px-4 py-3 text-sm text-center">
+              <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.tempC}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.humidity}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.aqiA1}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.aqiA2}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.aqiA3}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.accessControl}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.personsEntered}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noPpe}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.welding}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.cutting}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.others}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA1}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA2}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA3}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA4}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA5}</td>
+                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
                   <span className={`px-2 py-1 rounded text-xs font-medium ${r.fireStatus === 'OK' ? 'bg-success/20 text-success-foreground' : 'bg-danger/20 text-danger-foreground'}`}>
                     {r.fireStatus}
                   </span>
@@ -578,18 +725,27 @@ export const Reports = () => {
               'Avg. Load',
               'Avg Pressure'
             ]}
+            getRowData={(r: PumpRow, idx) => [
+              idx + 1,
+              r.date,
+              r.pumpNo,
+              r.status,
+              r.runHrs,
+              r.avgLoad,
+              r.avgPressure
+            ]}
             renderRow={(r: PumpRow, idx, start) => (
-              <tr key={r.id} className="hover:bg-muted/50">
-                <td className="px-4 py-3 text-sm text-foreground text-center">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-semibold">{r.pumpNo}</td>
-                <td className="px-4 py-3 text-sm text-center">
+              <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
+                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${r.status === 'Run' ? 'bg-success/20 text-success-foreground' : 'bg-muted text-foreground'}`}>
                     {r.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.runHrs}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgLoad}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgPressure}</td>
               </tr>
             )}
@@ -600,9 +756,17 @@ export const Reports = () => {
           <TableSection
             title="HP Pump Status"
             data={hp}
+            filterOptions={[
+              { label: 'Main Hydraulic Pump', value: 'Main Hydraulic Pump' },
+              { label: 'Auxiliary hyd pump', value: 'Auxiliary hyd pump' },
+              { label: 'Gear lub pump', value: 'Gear lub pump' }
+            ]}
+            filterKey="pumpType"
+            filterLabel="Pump Type"
             headers={[
               'SN',
               'Date',
+              'Pump Type',
               'Pump No',
               'Status (Run/Stand-by)',
               'Run Hrs',
@@ -613,22 +777,37 @@ export const Reports = () => {
               'Oil Cleanliness',
               'Water Saturation'
             ]}
+            getRowData={(r: HpPumpRow, idx) => [
+              idx + 1,
+              r.date,
+              r.pumpType,
+              r.pumpNo,
+              r.status,
+              r.runHrs,
+              r.avgLoad,
+              r.avgSystemPressure,
+              r.avgTankLevel,
+              r.avgOilTemp,
+              r.oilCleanliness,
+              r.waterSaturation
+            ]}
             renderRow={(r: HpPumpRow, idx, start) => (
-              <tr key={r.id} className="hover:bg-muted/50">
-                <td className="px-4 py-3 text-sm text-foreground text-center">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-semibold">{r.pumpNo}</td>
-                <td className="px-4 py-3 text-sm text-center">
+              <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.pumpType}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
+                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${r.status === 'Run' ? 'bg-success/20 text-success-foreground' : 'bg-muted text-foreground'}`}>
                     {r.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.runHrs}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgLoad}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgSystemPressure}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgTankLevel}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgOilTemp}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono">{r.oilCleanliness}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgSystemPressure}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgTankLevel}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgOilTemp}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.oilCleanliness}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center">{r.waterSaturation}</td>
               </tr>
             )}

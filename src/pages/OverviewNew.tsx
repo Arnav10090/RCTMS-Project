@@ -272,23 +272,74 @@ export const Overview = () => {
             <CoolantChargeControlCompact />
           </div>
 
-          <div className="rounded-lg border border-border bg-card px-2 pt-2 pb-1 shadow-sm">
-            <h3 className="text-sm font-semibold flex items-center gap-1.5 mb-2">
-              <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                <rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.2" fill="none" />
-                <rect x="5" y="9" width="14" height="6" fill="currentColor" opacity="0.12" />
-                <path d="M7 5v-1a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Pickling Tank
-            </h3>
-            <RollCoolantTank
-              targetVolume={systemData.coolantSystem.tankLevel}
-              currentVolume={systemData.coolantSystem.tankLevel * 0.8}
-              currentConcentration={systemData.coolantSystem.concentration}
-              oilToAdd={5.2}
-              waterToAdd={3.8}
-            />
-          </div>
+          <DataCard title="Roll Coolant System" icon={Droplet}>
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">ESI Value:</span>
+                <span className="font-mono font-semibold">{systemData.rollCoolantSystem.esiValue}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Pump#1 Status:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.pump1Status}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Pump#1 Run Hrs:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.pump1RunHrs.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Pump#2 Status:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.pump2Status}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Pump#2 Run Hrs:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.pump2RunHrs.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Agitator#1 Status:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.agitator1Status}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Agitator#1 Run Hrs:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.agitator1RunHrs.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Agitator#2 Status:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.agitator2Status}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Agitator#2 Run Hrs:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.agitator2RunHrs.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Mag. Separator Status:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.magneticSeparatorStatus}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Mag. Separator Run Hrs:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.magneticSeparatorRunHrs.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Skimmer Status:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.skimmerStatus}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Skimmer Run Hrs:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.skimmerRunHrs.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">DM Water pH:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.dmWaterPH}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">DM Water Temp:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.dmWaterTemp}°C</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">DM Water Conductivity:</span>
+                <span className="font-mono">{systemData.rollCoolantSystem.dmWaterConductivity} μS/cm</span>
+              </div>
+            </div>
+          </DataCard>
         </div>
       </div>
     </div>

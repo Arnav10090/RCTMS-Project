@@ -326,34 +326,6 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
       <div className="grid grid-cols-2 gap-2 max-w-[260px] pb-0">
         <div className="rounded-lg border border-border/80 p-1.5">
           <div className="flex items-center justify-between gap-1 mb-1">
-            <Label htmlFor="desired-conc-compact" className="text-[10px] text-muted-foreground">
-              Desired Conc.
-            </Label>
-            <Badge variant="secondary" className="text-[10px] py-0 px-1">{desiredConcentration.toFixed(2)}%</Badge>
-          </div>
-          <Slider
-            className="mb-1"
-            value={[desiredConcentration]}
-            min={0}
-            max={25}
-            step={0.1}
-            onValueChange={(values) => handleDesiredChange(values[0] ?? desiredConcentration)}
-          />
-          <Input
-            id="desired-conc-compact"
-            className="h-6 text-xs"
-            type="number"
-            inputMode="decimal"
-            min={0}
-            max={25}
-            step={0.1}
-            value={desiredConcentration}
-            onChange={(event) => handleDesiredChange(Number(event.target.value))}
-          />
-        </div>
-
-        <div className="rounded-lg border border-border/80 p-1.5">
-          <div className="flex items-center justify-between gap-1 mb-1">
             <Label htmlFor="current-conc-compact" className="text-[10px] text-muted-foreground">
               Current Conc.
             </Label>
@@ -379,6 +351,34 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
             step={0.1}
             value={currentConcentration}
             onChange={(event) => handleCurrentChange(Number(event.target.value))}
+          />
+        </div>
+
+        <div className="rounded-lg border border-border/80 p-1.5">
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <Label htmlFor="target-conc-compact" className="text-[10px] text-muted-foreground">
+              Target Conc.
+            </Label>
+            <Badge variant="secondary" className="text-[10px] py-0 px-1">{desiredConcentration.toFixed(2)}%</Badge>
+          </div>
+          <Slider
+            className="mb-1"
+            value={[desiredConcentration]}
+            min={0}
+            max={25}
+            step={0.1}
+            onValueChange={(values) => handleDesiredChange(values[0] ?? desiredConcentration)}
+          />
+          <Input
+            id="target-conc-compact"
+            className="h-6 text-xs"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            max={25}
+            step={0.1}
+            value={desiredConcentration}
+            onChange={(event) => handleDesiredChange(Number(event.target.value))}
           />
         </div>
 

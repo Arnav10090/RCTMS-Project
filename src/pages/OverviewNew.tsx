@@ -68,6 +68,10 @@ export const Overview = () => {
               <span className="font-mono font-bold">{systemData.coilData.id}</span>
             </div>
             <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Grade:</span>
+              <span className="font-semibold">{systemData.coilData.grade}</span>
+            </div>
+            <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Width:</span>
               <span className="font-mono">{systemData.coilData.width} mm</span>
             </div>
@@ -75,14 +79,10 @@ export const Overview = () => {
               <span className="text-muted-foreground">Thickness:</span>
               <span className="font-mono">{systemData.coilData.thickness} mm</span>
             </div>
-            <div className="flex justify-between items-baseline">
-              <span className="text-muted-foreground">Grade:</span>
-              <span className="font-semibold">{systemData.coilData.grade}</span>
-            </div>
           </div>
         </DataCard>
 
-        <DataCard title="Roll Coolant Parameters" icon={Droplet}>
+        <DataCard title="Roll Coolant Parameters" icon={Droplet} tankLevel={systemData.coolantSystem.tankLevel} tankLevelUnit="% / L">
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Tank Level:</span>
@@ -96,11 +96,23 @@ export const Overview = () => {
               <span className="text-muted-foreground">Concentration:</span>
               <span className="font-mono">{systemData.coolantSystem.concentration}%</span>
             </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Coolant Flow:</span>
+              <span className="font-mono">{systemData.coolantSystem.coolantFlow} L/min</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">DM Water pH:</span>
+              <span className="font-mono">{systemData.coolantSystem.dmWaterPH}</span>
+            </div>
           </div>
         </DataCard>
 
-        <DataCard title="Main Hydraulic System" icon={Gauge}>
+        <DataCard title="Main Hydraulic System" icon={Gauge} tankLevel={systemData.mainHydraulic.tankLevel} tankLevelUnit="%">
           <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Tank Level:</span>
+              <span className="font-mono">{systemData.mainHydraulic.tankLevel}%</span>
+            </div>
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
               <span className="font-mono">{systemData.mainHydraulic.pressure} bar</span>
@@ -120,8 +132,12 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Auxiliary Hydraulic System" icon={Wrench}>
+        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="%">
           <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Tank Level:</span>
+              <span className="font-mono">{systemData.auxiliaryHydraulic.tankLevel}%</span>
+            </div>
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
               <span className="font-mono">{systemData.auxiliaryHydraulic.pressure} bar</span>
@@ -137,6 +153,33 @@ export const Overview = () => {
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Water Sat:</span>
               <span className="font-mono">{systemData.auxiliaryHydraulic.waterSaturation}%</span>
+            </div>
+          </div>
+        </DataCard>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3">
+        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="%">
+          <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Tank Level:</span>
+              <span className="font-mono">{systemData.gearLubrication.tankLevel}%</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Temperature:</span>
+              <span className="font-mono">{systemData.gearLubrication.temperature}°C</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Water Saturation:</span>
+              <span className="font-mono">{systemData.gearLubrication.waterSaturation}%</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Flow:</span>
+              <span className="font-mono">{systemData.gearLubrication.flow} L/min</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Grade:</span>
+              <span className="font-mono">{systemData.gearLubrication.grade}</span>
             </div>
           </div>
         </DataCard>

@@ -391,6 +391,31 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
           />
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+            <AlertDialogDescription>
+              {confirmationAction === 'start'
+                ? 'Do you really want to start the charging with these values?'
+                : 'Do you really want to stop the charging?'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowConfirmation(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmationAction === 'start' ? confirmStartCharging : confirmStopCharging}
+              className={confirmationAction === 'start' ? 'bg-success' : 'bg-destructive'}
+            >
+              {confirmationAction === 'start' ? 'Start' : 'Stop'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

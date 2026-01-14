@@ -22,7 +22,8 @@ export const DataCard: React.FC<DataCardProps> = ({
   className,
   variant = 'default',
   tankLevel,
-  tankLevelUnit = '%'
+  tankLevelUnit = '%',
+  tankLevelLiters
 }) => {
   const variantStyles = {
     default: 'border-border',

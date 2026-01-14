@@ -221,8 +221,8 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                     Start
                   </Button>
                 </td>
-                <td className="py-0.5 px-1" rowSpan={5}>
-                  <div className="flex justify-center items-center h-full">
+                <td className="py-0.5 px-1" rowSpan={4}>
+                  <div className="flex flex-col justify-center items-center h-full gap-2">
                     <div className="relative w-24 h-24">
                       <svg className="w-24 h-24 transform -rotate-90">
                         {/* Background circle */}
@@ -252,6 +252,21 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                       {/* Percentage text */}
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-lg font-bold">{chargeProgress}%</span>
+                      </div>
+                    </div>
+                    <div className="w-full text-center">
+                      <div className="text-[9px] text-muted-foreground font-semibold mb-1">Added volume</div>
+                      <div className="flex justify-between items-center gap-0.5 text-[9px]">
+                        <span className="text-muted-foreground">Oil</span>
+                        <span className="font-mono font-bold text-black dark:text-success-foreground">
+                          {addedOilVolume.toFixed(2)} m³
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center gap-0.5 text-[9px]">
+                        <span className="text-muted-foreground">Water</span>
+                        <span className="font-mono font-bold text-primary">
+                          {addedWaterVolume.toFixed(2)} m³
+                        </span>
                       </div>
                     </div>
                   </div>

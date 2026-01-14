@@ -399,6 +399,42 @@ export const Overview = () => {
                   </div>
                 </>
               )}
+              {activeTab === 'gear-lube' && (
+                <>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Level:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.tankOilLevel}%</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Temp:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.tankOilTemp}°C</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Tank_Water_Saturation:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.tankWaterSaturation}%</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_System-Pressure:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.systemPressure} bar</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Pump#1_Status:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump1Status}</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Pump#1_Run_Hrs:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump1RunHrs.toFixed(1)}</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Pump#2_Status:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump2Status}</span>
+                  </div>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-muted-foreground">HP_Hyd_Pump#2_Run_Hrs:</span>
+                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump2RunHrs.toFixed(1)}</span>
+                  </div>
+                </>
+              )}
             </div>
           </DataCard>
         </div>

@@ -149,12 +149,8 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="%">
+        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.gearLubrication.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
-            <div className="flex justify-between items-baseline">
-              <span className="text-muted-foreground">Tank Level:</span>
-              <span className="font-mono">{systemData.gearLubrication.tankLevel}%</span>
-            </div>
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Temperature:</span>
               <span className="font-mono">{systemData.gearLubrication.temperature}°C</span>

@@ -77,6 +77,8 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
   const [chargeState, setChargeState] = useState<ChargeState>('idle');
   const [chargeProgress, setChargeProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationAction, setConfirmationAction] = useState<'start' | 'stop' | null>(null);
 
   const clearTimer = () => {
     if (timerRef.current) {

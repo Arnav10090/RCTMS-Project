@@ -202,7 +202,7 @@ export const Overview = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         <div className="lg:col-span-2">
-          <Tabs defaultValue="pickling" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-4 h-8">
               <TabsTrigger value="pickling" className="text-xs py-1">Roll Coolant Area</TabsTrigger>
               <TabsTrigger value="hydraulic" className="text-xs py-1">Hydraulic System</TabsTrigger>

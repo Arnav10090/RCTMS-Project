@@ -76,8 +76,20 @@ export const Overview = () => {
       dmWaterPH: 7.2,
       dmWaterTemp: 22.5,
       dmWaterConductivity: 18.3
+    },
+    hydraulicSystem: {
+      tankOilLevel: 75.4,
+      tankOilTemp: 42.1,
+      tankWaterSaturation: 2.1,
+      systemPressure: 145.8,
+      pump1Status: 'Running',
+      pump1RunHrs: 1850.5,
+      pump2Status: 'Running',
+      pump2RunHrs: 1848.2
     }
   };
+
+  const [activeTab, setActiveTab] = useState('pickling');
 
   return (
     <div className="space-y-3">

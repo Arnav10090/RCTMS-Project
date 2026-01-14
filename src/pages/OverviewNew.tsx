@@ -156,9 +156,7 @@ export const Overview = () => {
             </div>
           </div>
         </DataCard>
-      </div>
 
-      <div className="grid grid-cols-1 gap-3">
         <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="%">
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">

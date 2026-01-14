@@ -298,6 +298,7 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
                     step={0.5}
                     value={currentVolume}
                     onChange={(event) => handleCurrentVolumeChange(Number(event.target.value))}
+                    disabled={true}
                   />
                   <p className="mt-2 text-xs text-muted-foreground">Volume estimated from level transmitters prior to charging.</p>
                 </div>

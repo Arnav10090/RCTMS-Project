@@ -86,6 +86,16 @@ export const Overview = () => {
       pump1RunHrs: 1850.5,
       pump2Status: 'Running',
       pump2RunHrs: 1848.2
+    },
+    gearLubricationSystemParams: {
+      tankOilLevel: 88.6,
+      tankOilTemp: 35.2,
+      tankWaterSaturation: 1.5,
+      systemPressure: 125.3,
+      pump1Status: 'Running',
+      pump1RunHrs: 1625.8,
+      pump2Status: 'Idle',
+      pump2RunHrs: 1623.4
     }
   };
 

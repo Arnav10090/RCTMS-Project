@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react';
 
@@ -9,6 +10,9 @@ interface DataCardProps {
   children: React.ReactNode;
   className?: string;
   variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger';
+  tankLevel?: number;
+  tankLevelUnit?: string;
+  tankLevelLiters?: number;
 }
 
 export const DataCard: React.FC<DataCardProps> = ({
@@ -16,7 +20,10 @@ export const DataCard: React.FC<DataCardProps> = ({
   icon: Icon,
   children,
   className,
-  variant = 'default'
+  variant = 'default',
+  tankLevel,
+  tankLevelUnit = '%',
+  tankLevelLiters
 }) => {
   const variantStyles = {
     default: 'border-border',
@@ -36,9 +43,26 @@ export const DataCard: React.FC<DataCardProps> = ({
     )}>
       {hasHeaderContent && (
         <CardHeader className="pb-2 pt-3 px-4">
-          <CardTitle className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-            {Icon && <Icon className="h-3.5 w-3.5" />}
-            {title && <span>{title}</span>}
+          <CardTitle className="flex items-center justify-between gap-1.5 text-xs font-semibold text-foreground">
+            <div className="flex items-center gap-1.5">
+              {Icon && <Icon className="h-3.5 w-3.5" />}
+              {title && <span>{title}</span>}
+            </div>
+            {tankLevel !== undefined && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="font-mono font-bold cursor-help hover:text-primary transition-colors text-xs">
+                      {tankLevel.toFixed(1)}{tankLevelUnit}
+                      {tankLevelLiters !== undefined && ` / ${tankLevelLiters.toFixed(1)} L`}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Tank Level: {tankLevel.toFixed(1)} {tankLevelUnit}{tankLevelLiters !== undefined && ` / ${tankLevelLiters.toFixed(1)} L`}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </CardTitle>
         </CardHeader>
       )}

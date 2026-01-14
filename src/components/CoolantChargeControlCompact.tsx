@@ -5,6 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface CoolantChargeControlCompactProps {
   defaultSettings?: {
@@ -67,6 +77,10 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
   const [chargeState, setChargeState] = useState<ChargeState>('idle');
   const [chargeProgress, setChargeProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationAction, setConfirmationAction] = useState<'start' | 'stop' | null>(null);
+  const [addedOilVolume, setAddedOilVolume] = useState(0);
+  const [addedWaterVolume, setAddedWaterVolume] = useState(0);
 
   const clearTimer = () => {
     if (timerRef.current) {
@@ -75,29 +89,50 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
     }
   };
 
-  const startCharging = () => {
+  const handleStartClick = () => {
+    setConfirmationAction('start');
+    setShowConfirmation(true);
+  };
+
+  const confirmStartCharging = () => {
+    setShowConfirmation(false);
     if (timerRef.current) {
       return;
     }
 
     if (chargeProgress >= 100) {
       setChargeProgress(0);
+      setAddedOilVolume(0);
+      setAddedWaterVolume(0);
     }
 
     setChargeState('charging');
     timerRef.current = setInterval(() => {
       setChargeProgress((previous) => {
         const next = Math.min(previous + 5, 100);
+
+        // Calculate added volumes proportionally
+        setAddedOilVolume(Math.min((next / 100) * oilToAdd, oilToAdd));
+        setAddedWaterVolume(Math.min((next / 100) * waterToAdd, waterToAdd));
+
         if (next === 100) {
           clearTimer();
           setChargeState('complete');
+          setAddedOilVolume(oilToAdd);
+          setAddedWaterVolume(waterToAdd);
         }
         return next;
       });
     }, 1200);
   };
 
-  const stopCharging = () => {
+  const handleStopClick = () => {
+    setConfirmationAction('stop');
+    setShowConfirmation(true);
+  };
+
+  const confirmStopCharging = () => {
+    setShowConfirmation(false);
     clearTimer();
     setChargeState('stopped');
   };
@@ -106,6 +141,13 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
     clearTimer();
     setChargeProgress(0);
     setChargeState('idle');
+    setAddedOilVolume(0);
+    setAddedWaterVolume(0);
+    // Reset desired concentration and target volume to 0 after charging is complete
+    if (chargeProgress >= 100) {
+      setDesiredConcentration(0);
+      setTargetVolume(0);
+    }
   };
 
   useEffect(() => {
@@ -172,15 +214,15 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                   <Button
                     size="sm"
                     className="bg-success text-success-foreground hover:bg-success/90 h-6 text-[11px] px-1.5 w-full"
-                    onClick={startCharging}
-                    disabled={chargeState === 'charging'}
+                    onClick={handleStartClick}
+                    disabled={chargeState === 'charging' || chargeState === 'complete'}
                   >
                     <Play className="h-3 w-3 mr-0.5" />
                     Start
                   </Button>
                 </td>
-                <td className="py-0.5 px-1" rowSpan={5}>
-                  <div className="flex justify-center items-center h-full">
+                <td className="py-0.5 px-1" rowSpan={4}>
+                  <div className="flex flex-col justify-center items-center h-full gap-2">
                     <div className="relative w-24 h-24">
                       <svg className="w-24 h-24 transform -rotate-90">
                         {/* Background circle */}
@@ -212,16 +254,31 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                         <span className="text-lg font-bold">{chargeProgress}%</span>
                       </div>
                     </div>
+                    <div className="w-full text-center">
+                      <div className="text-[9px] text-muted-foreground font-semibold mb-1">Added volume</div>
+                      <div className="flex justify-between items-center gap-0.5 text-[9px]">
+                        <span className="text-muted-foreground">Oil</span>
+                        <span className="font-mono font-bold text-black dark:text-success-foreground">
+                          {addedOilVolume.toFixed(2)} m³
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center gap-0.5 text-[9px]">
+                        <span className="text-muted-foreground">Water</span>
+                        <span className="font-mono font-bold text-primary">
+                          {addedWaterVolume.toFixed(2)} m³
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </td>
               </tr>
               <tr className="border-t border-border/80">
                 <td className="py-0.5 px-1">
-                  <Button 
-                    size="sm" 
-                    variant="destructive" 
-                    onClick={stopCharging} 
-                    disabled={chargeState !== 'charging'} 
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={handleStopClick}
+                    disabled={chargeState !== 'charging'}
                     className="h-6 text-[11px] px-1.5 w-full"
                   >
                     <Square className="h-3 w-3 mr-0.5" />
@@ -231,11 +288,11 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
               </tr>
               <tr className="border-t border-border/80">
                 <td className="py-0.5 px-1">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    onClick={resetCharging} 
-                    disabled={chargeState === 'idle' && chargeProgress === 0} 
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={resetCharging}
+                    disabled={chargeState === 'idle' && chargeProgress === 0}
                     className="h-6 text-[11px] px-1.5 w-full"
                   >
                     <RotateCcw className="h-3 w-3 mr-0.5" />
@@ -243,18 +300,15 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                   </Button>
                 </td>
               </tr>
-              <tr className="border-t border-border/80 bg-success/10">
+              <tr className="border-t border-border/80">
                 <td className="py-0.5 px-1">
-                  <div className="flex justify-between items-center gap-0.5">
+                  <div className="text-[9px] text-muted-foreground font-semibold mb-0.5">To be added volume:</div>
+                  <div className="flex justify-between items-center gap-0.5 mb-0.5">
                     <span className="text-muted-foreground text-[10px]">Oil</span>
                     <span className="font-mono font-bold text-black dark:text-success-foreground text-[10px]">
                       {oilToAdd.toFixed(2)} m³
                     </span>
                   </div>
-                </td>
-              </tr>
-              <tr className="border-t border-border/80 bg-primary/10">
-                <td className="py-0.5 px-1">
                   <div className="flex justify-between items-center gap-0.5">
                     <span className="text-muted-foreground text-[10px]">Water</span>
                     <span className="font-mono font-bold text-primary text-[10px]">
@@ -270,34 +324,6 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
 
       {/* Right column: Concentration and Volume data */}
       <div className="grid grid-cols-2 gap-2 max-w-[260px] pb-0">
-        <div className="rounded-lg border border-border/80 p-1.5">
-          <div className="flex items-center justify-between gap-1 mb-1">
-            <Label htmlFor="desired-conc-compact" className="text-[10px] text-muted-foreground">
-              Desired Conc.
-            </Label>
-            <Badge variant="secondary" className="text-[10px] py-0 px-1">{desiredConcentration.toFixed(2)}%</Badge>
-          </div>
-          <Slider
-            className="mb-1"
-            value={[desiredConcentration]}
-            min={0}
-            max={25}
-            step={0.1}
-            onValueChange={(values) => handleDesiredChange(values[0] ?? desiredConcentration)}
-          />
-          <Input
-            id="desired-conc-compact"
-            className="h-6 text-xs"
-            type="number"
-            inputMode="decimal"
-            min={0}
-            max={25}
-            step={0.1}
-            value={desiredConcentration}
-            onChange={(event) => handleDesiredChange(Number(event.target.value))}
-          />
-        </div>
-
         <div className="rounded-lg border border-border/80 p-1.5">
           <div className="flex items-center justify-between gap-1 mb-1">
             <Label htmlFor="current-conc-compact" className="text-[10px] text-muted-foreground">
@@ -325,6 +351,34 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
             step={0.1}
             value={currentConcentration}
             onChange={(event) => handleCurrentChange(Number(event.target.value))}
+          />
+        </div>
+
+        <div className="rounded-lg border border-border/80 p-1.5">
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <Label htmlFor="target-conc-compact" className="text-[10px] text-muted-foreground">
+              Target Conc.
+            </Label>
+            <Badge variant="secondary" className="text-[10px] py-0 px-1">{desiredConcentration.toFixed(2)}%</Badge>
+          </div>
+          <Slider
+            className="mb-1"
+            value={[desiredConcentration]}
+            min={0}
+            max={25}
+            step={0.1}
+            onValueChange={(values) => handleDesiredChange(values[0] ?? desiredConcentration)}
+          />
+          <Input
+            id="target-conc-compact"
+            className="h-6 text-xs"
+            type="number"
+            inputMode="decimal"
+            min={0}
+            max={25}
+            step={0.1}
+            value={desiredConcentration}
+            onChange={(event) => handleDesiredChange(Number(event.target.value))}
           />
         </div>
 
@@ -362,6 +416,31 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
           />
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+            <AlertDialogDescription>
+              {confirmationAction === 'start'
+                ? 'Do you really want to start the charging with these values?'
+                : 'Do you really want to stop the charging?'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowConfirmation(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmationAction === 'start' ? confirmStartCharging : confirmStopCharging}
+              className={confirmationAction === 'start' ? 'bg-success' : 'bg-destructive'}
+            >
+              {confirmationAction === 'start' ? 'Start' : 'Stop'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

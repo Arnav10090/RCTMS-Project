@@ -153,16 +153,27 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   /* =========================
      CALCULATIONS
      ========================= */
-  const oilToAdd = useMemo(() => {
-    const desiredOil = targetVolume * (desiredConcentration / 100);
-    const currentOil = currentVolume * (currentConcentration / 100);
-    return Math.max(desiredOil - currentOil, 0);
-  }, [desiredConcentration, currentConcentration, currentVolume, targetVolume]);
 
-  const waterToAdd = useMemo(() => {
-    const projected = targetVolume - (oilToAdd + currentVolume);
-    return Math.max(projected, 0);
-  }, [currentVolume, oilToAdd, targetVolume]);
+  // Current volume increases as charging progresses
+  const currentVolume = baseCurrentVolume + addedVolume;
+
+  // Volume to be added = Target Volume - Current Volume (at start of charge)
+  const volumeToAdd = useMemo(
+    () => Math.max(targetVolume - baseCurrentVolume, 0),
+    [targetVolume, baseCurrentVolume]
+  );
+
+  // Oil volume = (Desired Concentration / 100) * Volume to be added
+  const oilToAdd = useMemo(
+    () => (desiredConcentration / 100) * volumeToAdd,
+    [desiredConcentration, volumeToAdd]
+  );
+
+  // Water volume = Volume to be added - Oil volume
+  const waterToAdd = useMemo(
+    () => Math.max(volumeToAdd - oilToAdd, 0),
+    [volumeToAdd, oilToAdd]
+  );
 
   /* =========================
      HANDLERS

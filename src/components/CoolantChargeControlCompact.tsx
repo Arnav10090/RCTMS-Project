@@ -201,8 +201,8 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                   <Button
                     size="sm"
                     className="bg-success text-success-foreground hover:bg-success/90 h-6 text-[11px] px-1.5 w-full"
-                    onClick={startCharging}
-                    disabled={chargeState === 'charging'}
+                    onClick={handleStartClick}
+                    disabled={chargeState === 'charging' || chargeState === 'complete'}
                   >
                     <Play className="h-3 w-3 mr-0.5" />
                     Start

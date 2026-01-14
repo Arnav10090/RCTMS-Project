@@ -109,15 +109,25 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   const startCharging = () => {
     if (timerRef.current) return;
 
-    if (chargeProgress >= 100) setChargeProgress(0);
+    if (chargeProgress >= 100) {
+      setChargeProgress(0);
+      setAddedVolume(0);
+    }
 
     setChargeState('charging');
     timerRef.current = setInterval(() => {
       setChargeProgress((prev) => {
         const next = Math.min(prev + 5, 100);
+
+        // Calculate volume to be added based on progress
+        const volumeToAdd = targetVolume - baseCurrentVolume;
+        const newAddedVolume = (next / 100) * volumeToAdd;
+        setAddedVolume(newAddedVolume);
+
         if (next === 100) {
           clearTimer();
           setChargeState('complete');
+          setTargetVolume(0); // Reset target volume when complete
         }
         return next;
       });

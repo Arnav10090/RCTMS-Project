@@ -142,6 +142,7 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
   const resetCharging = () => {
     clearTimer();
     setChargeProgress(0);
+    setAddedVolume(0);
     setChargeState('idle');
   };
 

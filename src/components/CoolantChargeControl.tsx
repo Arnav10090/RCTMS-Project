@@ -252,28 +252,13 @@ export const CoolantChargeControl: React.FC<CoolantChargeControlProps> = ({
                     <Label htmlFor="current-concentration" className="text-xs uppercase tracking-wide text-muted-foreground">
                       Current Concentration (Dact)
                     </Label>
-                    <Badge variant={concentrationDelta >= 0 ? 'outline' : 'destructive'}>
-                      {currentConcentration.toFixed(2)}%
+                    <Badge variant="outline">
+                      5.30%
                     </Badge>
                   </div>
-                  <Slider
-                    className="mt-4 opacity-50 pointer-events-none"
-                    value={[currentConcentration]}
-                    min={0}
-                    max={25}
-                    step={0.1}
-                  />
-                  <Input
-                    id="current-concentration"
-                    className="mt-3"
-                    type="number"
-                    inputMode="decimal"
-                    min={0}
-                    max={25}
-                    step={0.1}
-                    value={currentConcentration}
-                    disabled={true}
-                  />
+                  <div className="mt-3 p-3 rounded-lg bg-muted/50">
+                    <p className="text-2xl font-semibold">5.3</p>
+                  </div>
                   <p className="mt-2 text-xs text-muted-foreground">
                     Pull real-time readings or enter manual lab measurements for instant deviation awareness.
                   </p>

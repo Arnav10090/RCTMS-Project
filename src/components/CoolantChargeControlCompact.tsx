@@ -273,11 +273,11 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
               </tr>
               <tr className="border-t border-border/80">
                 <td className="py-0.5 px-1">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    onClick={resetCharging} 
-                    disabled={chargeState === 'idle' && chargeProgress === 0} 
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={resetCharging}
+                    disabled={chargeState === 'idle' && chargeProgress === 0}
                     className="h-6 text-[11px] px-1.5 w-full"
                   >
                     <RotateCcw className="h-3 w-3 mr-0.5" />
@@ -285,18 +285,15 @@ export const CoolantChargeControlCompact: React.FC<CoolantChargeControlCompactPr
                   </Button>
                 </td>
               </tr>
-              <tr className="border-t border-border/80 bg-success/10">
+              <tr className="border-t border-border/80">
                 <td className="py-0.5 px-1">
-                  <div className="flex justify-between items-center gap-0.5">
+                  <div className="text-[9px] text-muted-foreground font-semibold mb-0.5">To be added volume:</div>
+                  <div className="flex justify-between items-center gap-0.5 mb-0.5">
                     <span className="text-muted-foreground text-[10px]">Oil</span>
                     <span className="font-mono font-bold text-black dark:text-success-foreground text-[10px]">
                       {oilToAdd.toFixed(2)} m³
                     </span>
                   </div>
-                </td>
-              </tr>
-              <tr className="border-t border-border/80 bg-primary/10">
-                <td className="py-0.5 px-1">
                   <div className="flex justify-between items-center gap-0.5">
                     <span className="text-muted-foreground text-[10px]">Water</span>
                     <span className="font-mono font-bold text-primary text-[10px]">

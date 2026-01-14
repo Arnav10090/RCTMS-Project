@@ -31,19 +31,30 @@ export const Overview = () => {
     coolantSystem: {
       tankLevel: 87.3,
       temperature: 18.5,
-      concentration: 5.2
+      concentration: 5.2,
+      coolantFlow: 12.5,
+      dmWaterPH: 7.2
     },
     mainHydraulic: {
+      tankLevel: 75.4,
       pressure: 145.8,
       temperature: 42.1,
       contamination: 0.85,
       waterSaturation: 2.1
     },
     auxiliaryHydraulic: {
+      tankLevel: 82.1,
       pressure: 142.3,
       temperature: 39.8,
       contamination: 0.92,
       waterSaturation: 1.8
+    },
+    gearLubrication: {
+      tankLevel: 88.6,
+      temperature: 35.2,
+      waterSaturation: 1.5,
+      flow: 14.3,
+      grade: 'ISO VG 220'
     }
   };
 

@@ -4,7 +4,6 @@ import { GaugeDisplay } from '@/components/GaugeDisplay';
 import { Activity, Droplet, Gauge, Wrench } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { CoolantChargeControlCompact } from '@/components/CoolantChargeControlCompact';
-import RollCoolantTank from '@/components/RollCoolantTank';
 
 // images served from the public folder
 const rollImg = '/rollcoolantarea.png';

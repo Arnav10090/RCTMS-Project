@@ -30,6 +30,7 @@ export const Overview = () => {
     },
     coolantSystem: {
       tankLevel: 87.3,
+      tankLevelLiters: 24.5,
       temperature: 18.5,
       concentration: 5.2,
       coolantFlow: 12.5,
@@ -37,6 +38,7 @@ export const Overview = () => {
     },
     mainHydraulic: {
       tankLevel: 75.4,
+      tankLevelLiters: 30.2,
       pressure: 145.8,
       temperature: 42.1,
       contamination: 0.85,
@@ -44,6 +46,7 @@ export const Overview = () => {
     },
     auxiliaryHydraulic: {
       tankLevel: 82.1,
+      tankLevelLiters: 20.5,
       pressure: 142.3,
       temperature: 39.8,
       contamination: 0.92,
@@ -51,6 +54,7 @@ export const Overview = () => {
     },
     gearLubrication: {
       tankLevel: 88.6,
+      tankLevelLiters: 17.7,
       temperature: 35.2,
       waterSaturation: 1.5,
       flow: 14.3,

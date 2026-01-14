@@ -59,6 +59,24 @@ export const Overview = () => {
       waterSaturation: 1.5,
       flow: 14.3,
       grade: 'ISO VG 220'
+    },
+    rollCoolantSystem: {
+      esiValue: 8.5,
+      pump1Status: 'Running',
+      pump1RunHrs: 2451.3,
+      pump2Status: 'Running',
+      pump2RunHrs: 2449.8,
+      agitator1Status: 'Running',
+      agitator1RunHrs: 1203.5,
+      agitator2Status: 'Idle',
+      agitator2RunHrs: 1201.2,
+      magneticSeparatorStatus: 'Running',
+      magneticSeparatorRunHrs: 856.4,
+      skimmerStatus: 'Running',
+      skimmerRunHrs: 654.7,
+      dmWaterPH: 7.2,
+      dmWaterTemp: 22.5,
+      dmWaterConductivity: 18.3
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { DataCard } from '@/components/DataCard';
 import { GaugeDisplay } from '@/components/GaugeDisplay';
 import { Activity, Droplet, Gauge, Wrench } from 'lucide-react';

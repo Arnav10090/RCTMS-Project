@@ -522,10 +522,7 @@ const TableSection = ({
 };
 
 export const Reports = () => {
-  const [coolant] = React.useState(() => genCoolant());
-  const [cellar] = React.useState(() => genOilCellar());
-  const [pumps] = React.useState(() => genPumps());
-  const [hp] = React.useState(() => genHpPumps());
+  const { coolant, cellar, pumps, hp } = useDataContext();
   const [selectedTable, setSelectedTable] = React.useState<TableKey>('coolant');
 
   return (

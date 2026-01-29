@@ -127,6 +127,9 @@ type PumpRow = {
   pumpNo: string;
   status: string;
   runHrs: string;
+  noOfStarts: string;
+  noOfStops: string;
+  utilization: string;
   avgLoad: string;
   avgPressure: string;
 };
@@ -142,6 +145,9 @@ function genPumps(n = 30): PumpRow[] {
       pumpNo: '#1',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
+      noOfStarts: Math.round(3 + Math.random() * 10).toString(),
+      noOfStops: Math.round(2 + Math.random() * 9).toString(),
+      utilization: (20 + Math.random() * 80).toFixed(1),
       avgLoad: Math.round(40 + Math.random() * 50).toString(),
       avgPressure: (4 + Math.random() * 4).toFixed(1),
     });
@@ -151,6 +157,9 @@ function genPumps(n = 30): PumpRow[] {
       pumpNo: '#2',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
+      noOfStarts: Math.round(3 + Math.random() * 10).toString(),
+      noOfStops: Math.round(2 + Math.random() * 9).toString(),
+      utilization: (20 + Math.random() * 80).toFixed(1),
       avgLoad: Math.round(40 + Math.random() * 50).toString(),
       avgPressure: (4 + Math.random() * 4).toFixed(1),
     });

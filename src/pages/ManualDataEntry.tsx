@@ -636,8 +636,8 @@ export const ManualDataEntry = () => {
             originalData={pumps}
             onDataChange={handlePumpsChange}
             onSave={handleSavePumps}
-            headers={['SN', 'Date', 'Pump No', 'Run Hrs', 'Avg. Load', 'Avg Pressure']}
-            getRowData={(r: PumpRow, idx) => [idx + 1, r.date, r.pumpNo, r.runHrs, r.avgLoad, r.avgPressure]}
+            headers={['SN', 'Date', 'Pump No', 'Run Hrs', 'No. of Starts', 'No. of Stops', 'Utilization %', 'Avg. Load', 'Avg Pressure']}
+            getRowData={(r: PumpRow, idx) => [idx + 1, r.date, r.pumpNo, r.runHrs, r.noOfStarts, r.noOfStops, r.utilization, r.avgLoad, r.avgPressure]}
             renderRow={(r: PumpRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
@@ -647,6 +647,15 @@ export const ManualDataEntry = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.runHrs} onChange={(val) => handlePumpsChange(r.id, 'runHrs', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.noOfStarts} onChange={(val) => handlePumpsChange(r.id, 'noOfStarts', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.noOfStops} onChange={(val) => handlePumpsChange(r.id, 'noOfStops', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.utilization} onChange={(val) => handlePumpsChange(r.id, 'utilization', val)} isNumeric />
                 </td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.avgLoad} onChange={(val) => handlePumpsChange(r.id, 'avgLoad', val)} isNumeric />

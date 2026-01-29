@@ -24,6 +24,7 @@ export const KpiStrip: React.FC = () => {
       temperature: 18.5,
       concentration: 5.2,
       coolantFlow: 12.5,
+      coolantPH: 6.8,
       dmWaterPH: 7.2
     },
     mainHydraulic: {
@@ -76,7 +77,7 @@ export const KpiStrip: React.FC = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Roll Coolant Parameters" icon={Droplet} tankLevel={systemData.coolantSystem.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.coolantSystem.tankLevelLiters}>
+        <DataCard title="Roll Coolant Parameters" icon={Droplet} tankLevel={systemData.coolantSystem.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.coolantSystem.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Temperature:</span>
@@ -91,13 +92,17 @@ export const KpiStrip: React.FC = () => {
               <span className="font-mono">{systemData.coolantSystem.coolantFlow} L/min</span>
             </div>
             <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Roll Coolant pH:</span>
+              <span className="font-mono">{systemData.coolantSystem.coolantPH}</span>
+            </div>
+            <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">DM Water pH:</span>
               <span className="font-mono">{systemData.coolantSystem.dmWaterPH}</span>
             </div>
           </div>
         </DataCard>
 
-        <DataCard title="Main Hydraulic System" icon={Gauge} tankLevel={systemData.mainHydraulic.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.mainHydraulic.tankLevelLiters}>
+        <DataCard title="Main Hydraulic System" icon={Gauge} tankLevel={systemData.mainHydraulic.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.mainHydraulic.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
@@ -118,7 +123,7 @@ export const KpiStrip: React.FC = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.auxiliaryHydraulic.tankLevelLiters}>
+        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.auxiliaryHydraulic.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
@@ -139,7 +144,7 @@ export const KpiStrip: React.FC = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.gearLubrication.tankLevelLiters}>
+        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.gearLubrication.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Temperature:</span>

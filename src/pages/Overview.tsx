@@ -22,7 +22,8 @@ export const OverviewOld = ({ hideKpiCards = false }: OverviewProps) => {
     coolantSystem: {
       tankLevel: 87.3,
       temperature: 18.5,
-      concentration: 5.2
+      concentration: 5.2,
+      coolantPH: 6.8
     },
     mainHydraulic: {
       pressure: 145.8,
@@ -82,7 +83,7 @@ export const OverviewOld = ({ hideKpiCards = false }: OverviewProps) => {
               <GaugeDisplay
                 label="Tank Level"
                 value={systemData.coolantSystem.tankLevel}
-                unit="%"
+                unit="kL"
                 thresholds={{
                   warning: 30,
                   danger: 15
@@ -99,6 +100,12 @@ export const OverviewOld = ({ hideKpiCards = false }: OverviewProps) => {
                   <div className="text-xs text-muted-foreground">Concentration</div>
                   <div className="font-mono font-semibold text-black dark:text-white">
                     {systemData.coolantSystem.concentration}%
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Roll Coolant pH</div>
+                  <div className="font-mono font-semibold text-black dark:text-white">
+                    {systemData.coolantSystem.coolantPH}
                   </div>
                 </div>
               </div>

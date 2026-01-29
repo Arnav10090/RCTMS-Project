@@ -33,6 +33,7 @@ export const Overview = () => {
       temperature: 18.5,
       concentration: 5.2,
       coolantFlow: 12.5,
+      coolantPH: 6.8,
       dmWaterPH: 7.2
     },
     mainHydraulic: {
@@ -125,7 +126,7 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Roll Coolant Parameters" icon={Droplet} tankLevel={systemData.coolantSystem.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.coolantSystem.tankLevelLiters}>
+        <DataCard title="Roll Coolant Parameters" icon={Droplet} tankLevel={systemData.coolantSystem.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.coolantSystem.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Temperature:</span>
@@ -140,13 +141,17 @@ export const Overview = () => {
               <span className="font-mono">{systemData.coolantSystem.coolantFlow} L/min</span>
             </div>
             <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Roll Coolant pH:</span>
+              <span className="font-mono">{systemData.coolantSystem.coolantPH}</span>
+            </div>
+            <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">DM Water pH:</span>
               <span className="font-mono">{systemData.coolantSystem.dmWaterPH}</span>
             </div>
           </div>
         </DataCard>
 
-        <DataCard title="Main Hydraulic System" icon={Gauge} tankLevel={systemData.mainHydraulic.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.mainHydraulic.tankLevelLiters}>
+        <DataCard title="Main Hydraulic System" icon={Gauge} tankLevel={systemData.mainHydraulic.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.mainHydraulic.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
@@ -167,7 +172,7 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.auxiliaryHydraulic.tankLevelLiters}>
+        <DataCard title="Auxiliary Hydraulic System" icon={Wrench} tankLevel={systemData.auxiliaryHydraulic.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.auxiliaryHydraulic.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Pressure:</span>
@@ -188,7 +193,7 @@ export const Overview = () => {
           </div>
         </DataCard>
 
-        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="%" tankLevelLiters={systemData.gearLubrication.tankLevelLiters}>
+        <DataCard title="Gear Lubrication System" icon={Wrench} tankLevel={systemData.gearLubrication.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.gearLubrication.tankLevelLiters}>
           <div className="space-y-1.5 text-xs">
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Temperature:</span>
@@ -293,150 +298,152 @@ export const Overview = () => {
             <CoolantChargeControlCompact />
           </div>
 
-          <DataCard title="Coolant Parameters" icon={Droplet}>
-            <div className="space-y-2 text-xs">
-              {activeTab === 'pickling' && (
-                <>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">R.Coolant_ESI_Value:</span>
-                    <span className="font-mono font-semibold">{systemData.rollCoolantSystem.esiValue}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">R.Coolan_Pump#1_Status:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.pump1Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">R.Coolan_Pump#1_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.pump1RunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">R.Coolan_Pump#2_Status:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.pump2Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">R.Coolan_Pump#2_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.pump2RunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Agitator#1_Status:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.agitator1Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Agitator#1_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.agitator1RunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Agitator#2_Status:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.agitator2Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Agitator#2_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.agitator2RunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Magnetic_Separator_Status:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.magneticSeparatorStatus}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Magnetic_Separator_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.magneticSeparatorRunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Skimmer_Status:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.skimmerStatus}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">Skimmer_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.skimmerRunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">DM_Water_pH:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.dmWaterPH}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">DM_Water_Temp:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.dmWaterTemp}°C</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">DM_Water_Conductivity:</span>
-                    <span className="font-mono">{systemData.rollCoolantSystem.dmWaterConductivity} μS/cm</span>
-                  </div>
-                </>
-              )}
-              {activeTab === 'hydraulic' && (
-                <>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Level:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.tankOilLevel}%</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Temp:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.tankOilTemp}°C</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Tank_Water_Saturation:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.tankWaterSaturation}%</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_System-Pressure:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.systemPressure} bar</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#1_Status:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.pump1Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#1_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.pump1RunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#2_Status:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.pump2Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#2_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.hydraulicSystem.pump2RunHrs.toFixed(1)}</span>
-                  </div>
-                </>
-              )}
-              {activeTab === 'gear-lube' && (
-                <>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Level:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.tankOilLevel}%</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Temp:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.tankOilTemp}°C</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Tank_Water_Saturation:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.tankWaterSaturation}%</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_System-Pressure:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.systemPressure} bar</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#1_Status:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump1Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#1_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump1RunHrs.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#2_Status:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump2Status}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-muted-foreground">HP_Hyd_Pump#2_Run_Hrs:</span>
-                    <span className="font-mono">{systemData.gearLubricationSystemParams.pump2RunHrs.toFixed(1)}</span>
-                  </div>
-                </>
-              )}
-            </div>
-          </DataCard>
+          {activeTab !== 'legend' && (
+            <DataCard title="Coolant Parameters" icon={Droplet}>
+              <div className="space-y-2 text-xs">
+                {activeTab === 'pickling' && (
+                  <>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">R.Coolant_ESI_Value:</span>
+                      <span className="font-mono font-semibold">{systemData.rollCoolantSystem.esiValue}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">R.Coolan_Pump#1_Status:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.pump1Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">R.Coolan_Pump#1_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.pump1RunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">R.Coolan_Pump#2_Status:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.pump2Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">R.Coolan_Pump#2_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.pump2RunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Agitator#1_Status:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.agitator1Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Agitator#1_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.agitator1RunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Agitator#2_Status:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.agitator2Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Agitator#2_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.agitator2RunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Magnetic_Separator_Status:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.magneticSeparatorStatus}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Magnetic_Separator_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.magneticSeparatorRunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Skimmer_Status:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.skimmerStatus}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">Skimmer_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.skimmerRunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">DM_Water_pH:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.dmWaterPH}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">DM_Water_Temp:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.dmWaterTemp}°C</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">DM_Water_Conductivity:</span>
+                      <span className="font-mono">{systemData.rollCoolantSystem.dmWaterConductivity} μS/cm</span>
+                    </div>
+                  </>
+                )}
+                {activeTab === 'hydraulic' && (
+                  <>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Level:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.tankOilLevel}%</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Temp:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.tankOilTemp}°C</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Tank_Water_Saturation:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.tankWaterSaturation}%</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_System-Pressure:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.systemPressure} bar</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#1_Status:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.pump1Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#1_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.pump1RunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#2_Status:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.pump2Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#2_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.hydraulicSystem.pump2RunHrs.toFixed(1)}</span>
+                    </div>
+                  </>
+                )}
+                {activeTab === 'gear-lube' && (
+                  <>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Level:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.tankOilLevel}%</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Tank_Oil_Temp:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.tankOilTemp}°C</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Tank_Water_Saturation:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.tankWaterSaturation}%</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_System-Pressure:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.systemPressure} bar</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#1_Status:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.pump1Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#1_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.pump1RunHrs.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#2_Status:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.pump2Status}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-muted-foreground">HP_Hyd_Pump#2_Run_Hrs:</span>
+                      <span className="font-mono">{systemData.gearLubricationSystemParams.pump2RunHrs.toFixed(1)}</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            </DataCard>
+          )}
         </div>
       </div>
     </div>

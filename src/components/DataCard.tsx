@@ -53,12 +53,12 @@ export const DataCard: React.FC<DataCardProps> = ({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="font-mono font-bold cursor-help hover:text-primary transition-colors text-xs">
-                      {tankLevel.toFixed(1)}{tankLevelUnit}
-                      {tankLevelLiters !== undefined && ` / ${tankLevelLiters.toFixed(1)} L`}
+                      {tankLevel.toFixed(1)}%
+                      {tankLevelLiters !== undefined && ` / ${(tankLevelLiters / 1000).toFixed(2)} kL`}
                     </span>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Tank Level: {tankLevel.toFixed(1)} {tankLevelUnit}{tankLevelLiters !== undefined && ` / ${tankLevelLiters.toFixed(1)} L`}</p>
+                    <p>Tank Level: {tankLevel.toFixed(1)}%{tankLevelLiters !== undefined && ` / ${(tankLevelLiters / 1000).toFixed(2)} kL`}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

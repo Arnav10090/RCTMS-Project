@@ -11,6 +11,7 @@ import Overview from "./pages/OverviewNew";
 import { HydraulicSystem } from "./pages/HydraulicSystem";
 import { PumpOperations } from "./pages/PumpOperations";
 import { OilCellarMonitor } from "./pages/OilCellarMonitor";
+import { ManualDataEntry } from "./pages/ManualDataEntry";
 import AlarmManagement from "./pages/AlarmManagement";
 import { Reports } from "./pages/Reports";
 import Settings from "./pages/Settings";

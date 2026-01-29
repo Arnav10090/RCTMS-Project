@@ -22,7 +22,8 @@ export const KpiStripOilCellar: React.FC = () => {
       tankLevel: 87.3,
       tankLevelLiters: 24.5,
       temperature: 18.5,
-      concentration: 5.2
+      concentration: 5.2,
+      coolantPH: 6.8
     },
     safety: {
       withoutPPE: 0,
@@ -74,6 +75,10 @@ export const KpiStripOilCellar: React.FC = () => {
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Concentration:</span>
               <span className="font-mono">{systemData.coolantSystem.concentration}%</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Roll Coolant pH:</span>
+              <span className="font-mono">{systemData.coolantSystem.coolantPH}</span>
             </div>
           </div>
         </DataCard>

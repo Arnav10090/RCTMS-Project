@@ -213,10 +213,28 @@ function genHpPumps(n = 30): HpPumpRow[] {
   return rows;
 }
 
+// Editable cell component
+interface EditableCellProps {
+  value: string;
+  onChange: (newValue: string) => void;
+  isNumeric?: boolean;
+}
+
+const EditableCell: React.FC<EditableCellProps> = ({ value, onChange, isNumeric = false }) => (
+  <input
+    type={isNumeric ? 'number' : 'text'}
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    className="w-full px-2 py-1 border border-border rounded bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
+    step={isNumeric ? 'any' : undefined}
+  />
+);
+
 // Individual Table Component
 type TableSectionProps = {
   title: string;
   data: any[];
+  onDataChange: (rowId: number, field: string, value: string) => void;
   headers: string[];
   renderRow: (item: any, idx: number, startIdx: number) => React.ReactNode;
   renderHeader?: (headers: string[]) => React.ReactNode;
@@ -229,6 +247,7 @@ type TableSectionProps = {
 const TableSection = ({
   title,
   data,
+  onDataChange,
   headers,
   renderRow,
   renderHeader,
@@ -451,7 +470,11 @@ const TableSection = ({
                 </td>
               </tr>
             ) : (
-              pager.slice.map((item, idx) => renderRow(item, idx, (pager.page - 1) * pager.size))
+              pager.slice.map((item, idx) => (
+                <React.Fragment key={item.id}>
+                  {renderRow(item, idx, (pager.page - 1) * pager.size)}
+                </React.Fragment>
+              ))
             )}
           </tbody>
         </table>
@@ -521,11 +544,35 @@ const TableSection = ({
 };
 
 export const ManualDataEntry = () => {
-  const [coolant] = React.useState(() => genCoolant());
-  const [cellar] = React.useState(() => genOilCellar());
-  const [pumps] = React.useState(() => genPumps());
-  const [hp] = React.useState(() => genHpPumps());
+  const [coolant, setCoolant] = React.useState(() => genCoolant());
+  const [cellar, setCellar] = React.useState(() => genOilCellar());
+  const [pumps, setPumps] = React.useState(() => genPumps());
+  const [hp, setHp] = React.useState(() => genHpPumps());
   const [selectedTable, setSelectedTable] = React.useState<TableKey>('coolant');
+
+  const handleCoolantChange = (rowId: number, field: string, value: string) => {
+    setCoolant(prev => 
+      prev.map(row => row.id === rowId ? { ...row, [field]: value } : row)
+    );
+  };
+
+  const handleCellarChange = (rowId: number, field: string, value: string) => {
+    setCellar(prev => 
+      prev.map(row => row.id === rowId ? { ...row, [field]: value } : row)
+    );
+  };
+
+  const handlePumpsChange = (rowId: number, field: string, value: string) => {
+    setPumps(prev => 
+      prev.map(row => row.id === rowId ? { ...row, [field]: value } : row)
+    );
+  };
+
+  const handleHpChange = (rowId: number, field: string, value: string) => {
+    setHp(prev => 
+      prev.map(row => row.id === rowId ? { ...row, [field]: value } : row)
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -553,6 +600,7 @@ export const ManualDataEntry = () => {
           <TableSection
             title="Coolant Report"
             data={coolant}
+            onDataChange={handleCoolantChange}
             headers={[
               'SN',
               'Date',
@@ -580,15 +628,33 @@ export const ManualDataEntry = () => {
             renderRow={(r: CoolantRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.oilConc}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.conductivity}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.pH}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.tempC}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.esi}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.tramp}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.saponification}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.tankLvl}</td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.date} onChange={(val) => handleCoolantChange(r.id, 'date', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.oilConc} onChange={(val) => handleCoolantChange(r.id, 'oilConc', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.conductivity} onChange={(val) => handleCoolantChange(r.id, 'conductivity', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.pH} onChange={(val) => handleCoolantChange(r.id, 'pH', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.tempC} onChange={(val) => handleCoolantChange(r.id, 'tempC', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.esi} onChange={(val) => handleCoolantChange(r.id, 'esi', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.tramp} onChange={(val) => handleCoolantChange(r.id, 'tramp', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.saponification} onChange={(val) => handleCoolantChange(r.id, 'saponification', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm">
+                  <EditableCell value={r.tankLvl} onChange={(val) => handleCoolantChange(r.id, 'tankLvl', val)} isNumeric />
+                </td>
               </tr>
             )}
           />
@@ -598,6 +664,7 @@ export const ManualDataEntry = () => {
           <TableSection
             title="Oil Cellar Report"
             data={cellar}
+            onDataChange={handleCellarChange}
             headers={[
               'SN',
               'Date',
@@ -642,71 +709,66 @@ export const ManualDataEntry = () => {
               r.fireStatus,
               r.fireNextDue
             ]}
-            renderHeader={() => {
-              const topCellClass = "border border-gray-600 px-3 py-2 text-xs font-semibold text-muted-foreground text-center whitespace-nowrap align-middle";
-              const subCellClass = "border border-gray-600 px-3 py-1.5 text-xs font-medium text-muted-foreground text-center whitespace-nowrap";
-              return (
-                <>
-                  <tr>
-                    <th rowSpan={2} className={topCellClass}>SN</th>
-                    <th className={topCellClass}>Date</th>
-                    <th className={topCellClass}>Temp</th>
-                    <th className={topCellClass}>Humidity</th>
-                    <th colSpan={3} className={topCellClass}>AQI</th>
-                    <th rowSpan={2} className={topCellClass}>Access Control Status</th>
-                    <th rowSpan={2} className={topCellClass}>Person Entered</th>
-                    <th rowSpan={2} className={topCellClass}>No. of persons w/o ppe</th>
-                    <th colSpan={3} className={topCellClass}>Unsafe Acts</th>
-                    <th colSpan={5} className={topCellClass}>Illumination Level</th>
-                    <th colSpan={2} className={topCellClass}>Fire Det. system</th>
-                  </tr>
-                  <tr>
-                    <th className={subCellClass}>dd/mm/yy</th>
-                    <th className={subCellClass}>Deg.C</th>
-                    <th className={subCellClass}>%</th>
-                    <th className={subCellClass}>Area#1</th>
-                    <th className={subCellClass}>Area#2</th>
-                    <th className={subCellClass}>Area#3</th>
-                    <th className={subCellClass}>Welding</th>
-                    <th className={subCellClass}>Cutting</th>
-                    <th className={subCellClass}>Others</th>
-                    <th className={subCellClass}>Area#1</th>
-                    <th className={subCellClass}>Area#2</th>
-                    <th className={subCellClass}>Area#3</th>
-                    <th className={subCellClass}>Area#4</th>
-                    <th className={subCellClass}>Area#5</th>
-                    <th className={subCellClass}>Inspection Status</th>
-                    <th className={subCellClass}>Next Insp. Due</th>
-                  </tr>
-                </>
-              );
-            }}
             renderRow={(r: OilCellarRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.tempC}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.humidity}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.aqiA1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.aqiA2}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.aqiA3}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.accessControl}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.personsEntered}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noPpe}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.welding}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.cutting}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.others}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA2}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA3}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA4}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.illumA5}</td>
-                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${r.fireStatus === 'OK' ? 'bg-success/20 text-success-foreground' : 'bg-danger/20 text-danger-foreground'}`}>
-                    {r.fireStatus}
-                  </span>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.date} onChange={(val) => handleCellarChange(r.id, 'date', val)} />
                 </td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono">{r.fireNextDue}</td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.tempC} onChange={(val) => handleCellarChange(r.id, 'tempC', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.humidity} onChange={(val) => handleCellarChange(r.id, 'humidity', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.aqiA1} onChange={(val) => handleCellarChange(r.id, 'aqiA1', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.aqiA2} onChange={(val) => handleCellarChange(r.id, 'aqiA2', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.aqiA3} onChange={(val) => handleCellarChange(r.id, 'aqiA3', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.accessControl} onChange={(val) => handleCellarChange(r.id, 'accessControl', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.personsEntered} onChange={(val) => handleCellarChange(r.id, 'personsEntered', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.noPpe} onChange={(val) => handleCellarChange(r.id, 'noPpe', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.welding} onChange={(val) => handleCellarChange(r.id, 'welding', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.cutting} onChange={(val) => handleCellarChange(r.id, 'cutting', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.others} onChange={(val) => handleCellarChange(r.id, 'others', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.illumA1} onChange={(val) => handleCellarChange(r.id, 'illumA1', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.illumA2} onChange={(val) => handleCellarChange(r.id, 'illumA2', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.illumA3} onChange={(val) => handleCellarChange(r.id, 'illumA3', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.illumA4} onChange={(val) => handleCellarChange(r.id, 'illumA4', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.illumA5} onChange={(val) => handleCellarChange(r.id, 'illumA5', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.fireStatus} onChange={(val) => handleCellarChange(r.id, 'fireStatus', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm">
+                  <EditableCell value={r.fireNextDue} onChange={(val) => handleCellarChange(r.id, 'fireNextDue', val)} />
+                </td>
               </tr>
             )}
           />
@@ -716,6 +778,7 @@ export const ManualDataEntry = () => {
           <TableSection
             title="Roll Coolant Pump Status"
             data={pumps}
+            onDataChange={handlePumpsChange}
             headers={[
               'SN',
               'Date',
@@ -737,16 +800,24 @@ export const ManualDataEntry = () => {
             renderRow={(r: PumpRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
-                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${r.status === 'Run' ? 'bg-success/20 text-success-foreground' : 'bg-muted text-foreground'}`}>
-                    {r.status}
-                  </span>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.date} onChange={(val) => handlePumpsChange(r.id, 'date', val)} />
                 </td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgPressure}</td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.pumpNo} onChange={(val) => handlePumpsChange(r.id, 'pumpNo', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.status} onChange={(val) => handlePumpsChange(r.id, 'status', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.runHrs} onChange={(val) => handlePumpsChange(r.id, 'runHrs', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.avgLoad} onChange={(val) => handlePumpsChange(r.id, 'avgLoad', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm">
+                  <EditableCell value={r.avgPressure} onChange={(val) => handlePumpsChange(r.id, 'avgPressure', val)} isNumeric />
+                </td>
               </tr>
             )}
           />
@@ -756,6 +827,7 @@ export const ManualDataEntry = () => {
           <TableSection
             title="HP Pump Status"
             data={hp}
+            onDataChange={handleHpChange}
             filterOptions={[
               { label: 'Main Hydraulic Pump', value: 'Main Hydraulic Pump' },
               { label: 'Auxiliary hyd pump', value: 'Auxiliary hyd pump' },
@@ -794,21 +866,39 @@ export const ManualDataEntry = () => {
             renderRow={(r: HpPumpRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.pumpType}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
-                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${r.status === 'Run' ? 'bg-success/20 text-success-foreground' : 'bg-muted text-foreground'}`}>
-                    {r.status}
-                  </span>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.date} onChange={(val) => handleHpChange(r.id, 'date', val)} />
                 </td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgSystemPressure}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgTankLevel}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgOilTemp}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.oilCleanliness}</td>
-                <td className="px-4 py-3 text-sm text-foreground text-center">{r.waterSaturation}</td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.pumpType} onChange={(val) => handleHpChange(r.id, 'pumpType', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.pumpNo} onChange={(val) => handleHpChange(r.id, 'pumpNo', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.status} onChange={(val) => handleHpChange(r.id, 'status', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.runHrs} onChange={(val) => handleHpChange(r.id, 'runHrs', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.avgLoad} onChange={(val) => handleHpChange(r.id, 'avgLoad', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.avgSystemPressure} onChange={(val) => handleHpChange(r.id, 'avgSystemPressure', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.avgTankLevel} onChange={(val) => handleHpChange(r.id, 'avgTankLevel', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.avgOilTemp} onChange={(val) => handleHpChange(r.id, 'avgOilTemp', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.oilCleanliness} onChange={(val) => handleHpChange(r.id, 'oilCleanliness', val)} />
+                </td>
+                <td className="px-4 py-3 text-sm">
+                  <EditableCell value={r.waterSaturation} onChange={(val) => handleHpChange(r.id, 'waterSaturation', val)} isNumeric />
+                </td>
               </tr>
             )}
           />

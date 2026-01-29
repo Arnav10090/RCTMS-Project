@@ -127,6 +127,9 @@ type PumpRow = {
   pumpNo: string;
   status: string;
   runHrs: string;
+  noOfStarts: string;
+  noOfStops: string;
+  utilization: string;
   avgLoad: string;
   avgPressure: string;
 };
@@ -142,6 +145,9 @@ function genPumps(n = 30): PumpRow[] {
       pumpNo: '#1',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
+      noOfStarts: Math.round(3 + Math.random() * 10).toString(),
+      noOfStops: Math.round(2 + Math.random() * 9).toString(),
+      utilization: (20 + Math.random() * 80).toFixed(1),
       avgLoad: Math.round(40 + Math.random() * 50).toString(),
       avgPressure: (4 + Math.random() * 4).toFixed(1),
     });
@@ -151,6 +157,9 @@ function genPumps(n = 30): PumpRow[] {
       pumpNo: '#2',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
+      noOfStarts: Math.round(3 + Math.random() * 10).toString(),
+      noOfStops: Math.round(2 + Math.random() * 9).toString(),
+      utilization: (20 + Math.random() * 80).toFixed(1),
       avgLoad: Math.round(40 + Math.random() * 50).toString(),
       avgPressure: (4 + Math.random() * 4).toFixed(1),
     });
@@ -166,6 +175,9 @@ type HpPumpRow = {
   pumpNo: string;
   status: string;
   runHrs: string;
+  noOfStarts: string;
+  noOfStops: string;
+  utilization: string;
   avgLoad: string;
   avgSystemPressure: string;
   avgTankLevel: string;
@@ -189,6 +201,9 @@ function genHpPumps(n = 30): HpPumpRow[] {
       pumpNo: '#1',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
+      noOfStarts: Math.round(3 + Math.random() * 10).toString(),
+      noOfStops: Math.round(2 + Math.random() * 9).toString(),
+      utilization: (20 + Math.random() * 80).toFixed(1),
       avgLoad: Math.round(40 + Math.random() * 50).toString(),
       avgSystemPressure: (90 + Math.random() * 40).toFixed(1),
       avgTankLevel: (40 + Math.random() * 40).toFixed(1),
@@ -203,6 +218,9 @@ function genHpPumps(n = 30): HpPumpRow[] {
       pumpNo: '#2',
       status: Math.random() > 0.2 ? 'Run' : 'Stand-by',
       runHrs: (2 + Math.random() * 8).toFixed(1),
+      noOfStarts: Math.round(3 + Math.random() * 10).toString(),
+      noOfStops: Math.round(2 + Math.random() * 9).toString(),
+      utilization: (20 + Math.random() * 80).toFixed(1),
       avgLoad: Math.round(40 + Math.random() * 50).toString(),
       avgSystemPressure: (90 + Math.random() * 40).toFixed(1),
       avgTankLevel: (40 + Math.random() * 40).toFixed(1),
@@ -719,6 +737,9 @@ export const Reports = () => {
               'Date',
               'Pump No',
               'Run Hrs',
+              'No. of Starts',
+              'No. of Stops',
+              'Utilization %',
               'Avg. Load',
               'Avg Pressure'
             ]}
@@ -727,6 +748,9 @@ export const Reports = () => {
               r.date,
               r.pumpNo,
               r.runHrs,
+              r.noOfStarts,
+              r.noOfStops,
+              r.utilization,
               r.avgLoad,
               r.avgPressure
             ]}
@@ -736,6 +760,9 @@ export const Reports = () => {
                 <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noOfStarts}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noOfStops}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.utilization}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgPressure}</td>
               </tr>
@@ -760,6 +787,9 @@ export const Reports = () => {
               'Pump Type',
               'Pump No',
               'Run Hrs',
+              'No. of Starts',
+              'No. of Stops',
+              'Utilization %',
               'Avg. Load',
               'Avg System Pressure',
               'Avg. Tank Level',
@@ -773,6 +803,9 @@ export const Reports = () => {
               r.pumpType,
               r.pumpNo,
               r.runHrs,
+              r.noOfStarts,
+              r.noOfStops,
+              r.utilization,
               r.avgLoad,
               r.avgSystemPressure,
               r.avgTankLevel,
@@ -787,6 +820,9 @@ export const Reports = () => {
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.pumpType}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noOfStarts}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noOfStops}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.utilization}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgSystemPressure}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgTankLevel}</td>

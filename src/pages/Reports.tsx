@@ -737,6 +737,9 @@ export const Reports = () => {
               'Date',
               'Pump No',
               'Run Hrs',
+              'No. of Starts',
+              'No. of Stops',
+              'Utilization %',
               'Avg. Load',
               'Avg Pressure'
             ]}
@@ -745,6 +748,9 @@ export const Reports = () => {
               r.date,
               r.pumpNo,
               r.runHrs,
+              r.noOfStarts,
+              r.noOfStops,
+              r.utilization,
               r.avgLoad,
               r.avgPressure
             ]}
@@ -754,6 +760,9 @@ export const Reports = () => {
                 <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noOfStarts}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.noOfStops}</td>
+                <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.utilization}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgPressure}</td>
               </tr>

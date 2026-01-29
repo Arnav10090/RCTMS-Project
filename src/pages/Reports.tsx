@@ -718,7 +718,6 @@ export const Reports = () => {
               'SN',
               'Date',
               'Pump No',
-              'Status (Run/Stand-by)',
               'Run Hrs',
               'Avg. Load',
               'Avg Pressure'
@@ -727,7 +726,6 @@ export const Reports = () => {
               idx + 1,
               r.date,
               r.pumpNo,
-              r.status,
               r.runHrs,
               r.avgLoad,
               r.avgPressure
@@ -737,11 +735,6 @@ export const Reports = () => {
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center font-semibold border-r border-gray-600">{r.pumpNo}</td>
-                <td className="px-4 py-3 text-sm text-center border-r border-gray-600">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${r.status === 'Run' ? 'bg-success/20 text-success-foreground' : 'bg-muted text-foreground'}`}>
-                    {r.status}
-                  </span>
-                </td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.runHrs}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{r.avgLoad}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center">{r.avgPressure}</td>

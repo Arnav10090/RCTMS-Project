@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { ChevronLeft, ChevronRight, Search, X, FileText, FileSpreadsheet } from 'lucide-react';
+import { useDataContext } from '@/context/DataContext';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 

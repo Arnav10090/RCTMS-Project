@@ -9,7 +9,7 @@ import {
   FileText,
   Monitor,
   Gauge,
-  PencilSquare
+  Edit
 } from 'lucide-react';
 
 export const navigationItems = [

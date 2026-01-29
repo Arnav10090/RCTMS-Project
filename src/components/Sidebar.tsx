@@ -1,14 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  BarChart3, 
-  Droplets, 
-  Cog, 
-  ShieldAlert, 
-  AlertTriangle, 
+import {
+  BarChart3,
+  Droplets,
+  Cog,
+  ShieldAlert,
+  AlertTriangle,
   FileText,
   Monitor,
-  Gauge
+  Gauge,
+  Edit
 } from 'lucide-react';
 
 export const navigationItems = [
@@ -31,16 +32,22 @@ export const navigationItems = [
     description: 'HMI-04'
   },
   {
+    path: '/manual-data-entry',
+    name: 'Manual Data Entry',
+    icon: Edit,
+    description: 'HMI-05'
+  },
+  {
     path: '/alarms',
     name: 'Alarm Management',
     icon: AlertTriangle,
-    description: 'HMI-05'
+    description: 'HMI-06'
   },
   {
     path: '/reports',
     name: 'Reports',
     icon: FileText,
-    description: 'HMI-06'
+    description: 'HMI-07'
   },
   {
     path: '/settings',

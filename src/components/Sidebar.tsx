@@ -34,7 +34,7 @@ export const navigationItems = [
   {
     path: '/manual-data-entry',
     name: 'Manual Data Entry',
-    icon: PencilSquare,
+    icon: Edit,
     description: 'HMI-05'
   },
   {

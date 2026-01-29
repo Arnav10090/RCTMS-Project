@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { DataCard } from '@/components/DataCard';
-import { GaugeDisplay } from '@/components/GaugeDisplay';
-import { Activity, Droplet, CheckCircle, Shield } from 'lucide-react';
+import { Activity, Droplet, Shield } from 'lucide-react';
 
 export const KpiStripOilCellar: React.FC = () => {
   const randomGrade = useMemo(() => {
@@ -21,6 +20,7 @@ export const KpiStripOilCellar: React.FC = () => {
     },
     coolantSystem: {
       tankLevel: 87.3,
+      tankLevelLiters: 24.5,
       temperature: 18.5,
       concentration: 5.2
     },
@@ -41,96 +41,91 @@ export const KpiStripOilCellar: React.FC = () => {
 
   return (
     <div className="mt-6 px-6 pb-4">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
         {/* Running Coil Data */}
-        <DataCard title="Running Coil Data" icon={Activity} variant="primary">
-          <div className="space-y-3">
-            <div>
-              <div className="text-xs text-muted-foreground">Coil ID</div>
-              <div className="text-lg font-mono font-bold text-black dark:text-white">{systemData.coilData.id}</div>
+        <DataCard title="Running Coil Data" icon={Activity}>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Coil ID:</span>
+              <span className="font-mono font-bold">{systemData.coilData.id}</span>
             </div>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div>
-                <div className="text-xs text-muted-foreground">Width</div>
-                <div className="font-mono font-semibold text-black dark:text-white">{systemData.coilData.width} mm</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Thickness</div>
-                <div className="font-mono font-semibold text-black dark:text-white">{systemData.coilData.thickness} mm</div>
-              </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Grade:</span>
+              <span className="font-semibold">{systemData.coilData.grade}</span>
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Grade</div>
-              <div className="text-sm font-semibold text-secondary dark:text-white">{systemData.coilData.grade}</div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Width:</span>
+              <span className="font-mono">{systemData.coilData.width} mm</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Thickness:</span>
+              <span className="font-mono">{systemData.coilData.thickness} mm</span>
             </div>
           </div>
         </DataCard>
 
         {/* Roll Coolant Parameters */}
-        <DataCard title="Roll Coolant Parameters" icon={Droplet} variant="success">
-          <div className="space-y-4">
-            <GaugeDisplay label="Tank Level" value={systemData.coolantSystem.tankLevel} unit="%" thresholds={{ warning: 30, danger: 15 }} />
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div>
-                <div className="text-xs text-muted-foreground">Coolant Temperature</div>
-                <div className="font-mono font-semibold text-black dark:text-white">{systemData.coolantSystem.temperature}°C</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted-foreground">Coolant Concentration</div>
-                <div className="font-mono font-semibold text-black dark:text-white">{systemData.coolantSystem.concentration}%</div>
-              </div>
+        <DataCard title="Roll Coolant Parameters" icon={Droplet} tankLevel={systemData.coolantSystem.tankLevel} tankLevelUnit="kL" tankLevelLiters={systemData.coolantSystem.tankLevelLiters}>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Temperature:</span>
+              <span className="font-mono">{systemData.coolantSystem.temperature}°C</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Concentration:</span>
+              <span className="font-mono">{systemData.coolantSystem.concentration}%</span>
             </div>
           </div>
         </DataCard>
 
-        {/* Oil Cellar Status & Access Control */}
-        <DataCard title="Oil Cellar Status & Access Control" icon={Shield} variant="primary" className="lg:col-span-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Oil Cellar Section */}
-            <div className="space-y-2 border-r border-border/50 pr-4">
-              <div className="font-semibold text-sm mb-3 text-muted-foreground">Oil Cellar Environment</div>
-              <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
-                <div>
-                  <div className="text-xs text-muted-foreground">Person w/o PPE</div>
-                  <div className="font-mono font-semibold text-foreground">{systemData.safety.withoutPPE}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">No. of person entered</div>
-                  <div className="font-mono font-semibold text-foreground">{systemData.safety.totalEntered}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Avg. AQI</div>
-                  <div className="font-mono font-semibold text-foreground">{systemData.safety.averageAQI}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Humidity</div>
-                  <div className="font-mono font-semibold text-foreground">{systemData.safety.humidity}%</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Temp</div>
-                  <div className="font-mono font-semibold text-foreground">{systemData.safety.temperature}°C</div>
-                </div>
+        {/* Oil Cellar Status & Access Control - Attached as 3rd and 4th columns */}
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* Oil Cellar Status */}
+          <DataCard title="Oil Cellar Status" icon={Shield}>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Person w/o PPE:</span>
+                <span className="font-mono font-semibold">{systemData.safety.withoutPPE}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">No. Entered:</span>
+                <span className="font-mono font-semibold">{systemData.safety.totalEntered}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Avg. AQI:</span>
+                <span className="font-mono font-semibold">{systemData.safety.averageAQI}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Humidity:</span>
+                <span className="font-mono font-semibold">{systemData.safety.humidity}%</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Temperature:</span>
+                <span className="font-mono font-semibold">{systemData.safety.temperature}°C</span>
               </div>
             </div>
+          </DataCard>
 
-            {/* Access Control Section */}
-            <div className="space-y-2 pl-2">
-              <div className="font-semibold text-sm mb-3 text-muted-foreground">Access Control System</div>
-              <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm">
-                <div>
-                  <div className="text-xs text-muted-foreground mb-1">Fire Ext. system</div>
-                  <div className={`px-2 py-1 rounded text-center text-xs font-bold ${systemData.accessControl.fireExtSystem === 'Active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-                    {systemData.accessControl.fireExtSystem === 'Active' ? 'Healthy' : 'Unhealthy'}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Unsafe Acts Today</div>
-                  <div className="font-mono font-semibold text-foreground">{systemData.accessControl.unsafeActs}</div>
-                </div>
+          {/* Access Control */}
+          <DataCard title="Access Control" icon={Shield}>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Fire Ext. System:</span>
+                <span className={`px-2 py-1 rounded text-xs font-bold ${systemData.accessControl.fireExtSystem === 'Active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                  {systemData.accessControl.fireExtSystem === 'Active' ? 'Active' : 'Inactive'}
+                </span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Unsafe Acts:</span>
+                <span className="font-mono font-semibold">{systemData.accessControl.unsafeActs}</span>
+              </div>
+              <div className="flex justify-between items-baseline">
+                <span className="text-muted-foreground">Status:</span>
+                <span className="font-mono font-semibold">{systemData.accessControl.status}</span>
               </div>
             </div>
-          </div>
-        </DataCard>
+          </DataCard>
+        </div>
       </div>
     </div>
   );

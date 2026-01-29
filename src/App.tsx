@@ -34,6 +34,7 @@ const App = () => (
             <Route path="hydraulic" element={<HydraulicSystem />} />
             <Route path="pumps" element={<PumpOperations />} />
             <Route path="oil-cellar" element={<OilCellarMonitor />} />
+            <Route path="manual-data-entry" element={<ManualDataEntry />} />
             <Route path="alarms" element={<AlarmManagement />} />
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} />

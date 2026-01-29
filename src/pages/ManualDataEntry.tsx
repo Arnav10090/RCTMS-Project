@@ -636,17 +636,14 @@ export const ManualDataEntry = () => {
             originalData={pumps}
             onDataChange={handlePumpsChange}
             onSave={handleSavePumps}
-            headers={['SN', 'Date', 'Pump No', 'Status (Run/Stand-by)', 'Run Hrs', 'Avg. Load', 'Avg Pressure']}
-            getRowData={(r: PumpRow, idx) => [idx + 1, r.date, r.pumpNo, r.status, r.runHrs, r.avgLoad, r.avgPressure]}
+            headers={['SN', 'Date', 'Pump No', 'Run Hrs', 'Avg. Load', 'Avg Pressure']}
+            getRowData={(r: PumpRow, idx) => [idx + 1, r.date, r.pumpNo, r.runHrs, r.avgLoad, r.avgPressure]}
             renderRow={(r: PumpRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
                 <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.pumpNo} onChange={(val) => handlePumpsChange(r.id, 'pumpNo', val)} />
-                </td>
-                <td className="px-4 py-3 text-sm border-r border-gray-600">
-                  <EditableCell value={r.status} onChange={(val) => handlePumpsChange(r.id, 'status', val)} />
                 </td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.runHrs} onChange={(val) => handlePumpsChange(r.id, 'runHrs', val)} isNumeric />

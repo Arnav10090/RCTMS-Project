@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AlarmProvider } from "./components/AlarmContext";
 import { AlarmNotifier } from "./components/AlarmNotifier";
 import { AlarmFooter } from "./components/AlarmFooter";
+import { DataProvider } from "./context/DataContext";
 import { Layout } from "./components/Layout";
 import Overview from "./pages/OverviewNew";
 import { HydraulicSystem } from "./pages/HydraulicSystem";

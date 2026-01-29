@@ -82,7 +82,7 @@ export const OverviewOld = ({ hideKpiCards = false }: OverviewProps) => {
               <GaugeDisplay
                 label="Tank Level"
                 value={systemData.coolantSystem.tankLevel}
-                unit="%"
+                unit="kL"
                 thresholds={{
                   warning: 30,
                   danger: 15

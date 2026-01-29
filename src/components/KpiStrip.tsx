@@ -24,6 +24,7 @@ export const KpiStrip: React.FC = () => {
       temperature: 18.5,
       concentration: 5.2,
       coolantFlow: 12.5,
+      coolantPH: 6.8,
       dmWaterPH: 7.2
     },
     mainHydraulic: {
@@ -89,6 +90,10 @@ export const KpiStrip: React.FC = () => {
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">Coolant Flow:</span>
               <span className="font-mono">{systemData.coolantSystem.coolantFlow} L/min</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Roll Coolant pH:</span>
+              <span className="font-mono">{systemData.coolantSystem.coolantPH}</span>
             </div>
             <div className="flex justify-between items-baseline">
               <span className="text-muted-foreground">DM Water pH:</span>

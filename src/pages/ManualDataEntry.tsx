@@ -710,9 +710,7 @@ export const ManualDataEntry = () => {
             renderRow={(r: OilCellarRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
-                <td className="px-4 py-3 text-sm border-r border-gray-600">
-                  <EditableCell value={r.date} onChange={(val) => handleCellarChange(r.id, 'date', val)} />
-                </td>
+                <td className="px-4 py-3 text-sm text-foreground text-center font-mono border-r border-gray-600">{r.date}</td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.tempC} onChange={(val) => handleCellarChange(r.id, 'tempC', val)} isNumeric />
                 </td>

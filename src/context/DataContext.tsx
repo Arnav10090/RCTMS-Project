@@ -56,6 +56,9 @@ type HpPumpRow = {
   pumpNo: string;
   status: string;
   runHrs: string;
+  noOfStarts: string;
+  noOfStops: string;
+  utilization: string;
   avgLoad: string;
   avgSystemPressure: string;
   avgTankLevel: string;

@@ -678,8 +678,8 @@ export const ManualDataEntry = () => {
             filterOptions={[{ label: 'Main Hydraulic Pump', value: 'Main Hydraulic Pump' }, { label: 'Auxiliary hyd pump', value: 'Auxiliary hyd pump' }, { label: 'Gear lub pump', value: 'Gear lub pump' }]}
             filterKey="pumpType"
             filterLabel="Pump Type"
-            headers={['SN', 'Date', 'Pump Type', 'Pump No', 'Run Hrs', 'Avg. Load', 'Avg System Pressure', 'Avg. Tank Level', 'Avg. Oil Temp', 'Oil Cleanliness', 'Water Saturation']}
-            getRowData={(r: HpPumpRow, idx) => [idx + 1, r.date, r.pumpType, r.pumpNo, r.runHrs, r.avgLoad, r.avgSystemPressure, r.avgTankLevel, r.avgOilTemp, r.oilCleanliness, r.waterSaturation]}
+            headers={['SN', 'Date', 'Pump Type', 'Pump No', 'Run Hrs', 'No. of Starts', 'No. of Stops', 'Utilization %', 'Avg. Load', 'Avg System Pressure', 'Avg. Tank Level', 'Avg. Oil Temp', 'Oil Cleanliness', 'Water Saturation']}
+            getRowData={(r: HpPumpRow, idx) => [idx + 1, r.date, r.pumpType, r.pumpNo, r.runHrs, r.noOfStarts, r.noOfStops, r.utilization, r.avgLoad, r.avgSystemPressure, r.avgTankLevel, r.avgOilTemp, r.oilCleanliness, r.waterSaturation]}
             renderRow={(r: HpPumpRow, idx, start) => (
               <tr key={r.id} className="hover:bg-muted/50 border-b border-gray-600">
                 <td className="px-4 py-3 text-sm text-foreground text-center border-r border-gray-600">{start + idx + 1}</td>
@@ -692,6 +692,15 @@ export const ManualDataEntry = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.runHrs} onChange={(val) => handleHpChange(r.id, 'runHrs', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.noOfStarts} onChange={(val) => handleHpChange(r.id, 'noOfStarts', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.noOfStops} onChange={(val) => handleHpChange(r.id, 'noOfStops', val)} isNumeric />
+                </td>
+                <td className="px-4 py-3 text-sm border-r border-gray-600">
+                  <EditableCell value={r.utilization} onChange={(val) => handleHpChange(r.id, 'utilization', val)} isNumeric />
                 </td>
                 <td className="px-4 py-3 text-sm border-r border-gray-600">
                   <EditableCell value={r.avgLoad} onChange={(val) => handleHpChange(r.id, 'avgLoad', val)} isNumeric />

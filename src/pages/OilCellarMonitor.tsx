@@ -235,11 +235,11 @@ export const OilCellarMonitor = () => {
             <div className="text-sm text-muted-foreground">Toggle cells to mark availability/status for each area.</div>
           </div>
 
-          <Table className="rounded-lg overflow-hidden">
+          <Table className="rounded-lg overflow-hidden border-collapse">
             <TableCaption className="pt-4 text-xs text-muted-foreground">Interactive table — switches represent the "xxx" marks.</TableCaption>
             <TableHeader>
-              <TableRow className="bg-card/60 hover:bg-card/60">
-                <TableHead className="w-12 sticky left-0 bg-card z-10 text-center px-2">SN</TableHead>
+              <TableRow className="bg-card/60 hover:bg-card/60 border-t border-black">
+                <TableHead className="w-12 sticky left-0 bg-card z-10 text-center px-2 border-l border-grey">SN</TableHead>
                 <TableHead className="min-w-[180px] sticky left-12 bg-card z-10 text-center px-2">Description</TableHead>
                 {areas.map((a) => (
                   <TableHead key={a} className="text-center px-2">{a}</TableHead>
@@ -249,7 +249,7 @@ export const OilCellarMonitor = () => {
             <TableBody>
               {rows.map((row, rIdx) => (
                 <TableRow key={row.id} className="hover:bg-accent/40">
-                  <TableCell className="font-mono text-xs sticky left-0 bg-background/70 backdrop-blur z-10 text-center px-2">{rIdx + 1}</TableCell>
+                  <TableCell className="font-mono text-xs sticky left-0 bg-background/70 backdrop-blur z-10 text-center px-2 border-l border-black">{rIdx + 1}</TableCell>
                   <TableCell className="font-medium sticky left-12 bg-background/70 backdrop-blur z-10 text-center px-2">{row.label}</TableCell>
                   {areas.map((_, cIdx) => (
                     <TableCell key={`${row.id}-${cIdx}`} className="text-center px-2">

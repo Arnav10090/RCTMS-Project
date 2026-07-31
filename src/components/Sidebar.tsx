@@ -66,7 +66,9 @@ export const Sidebar = ({ isCollapsed }: SidebarProps) => {
     <div className={`${isCollapsed ? 'w-16' : 'w-64'} fixed top-0 left-0 h-screen z-40 bg-primary shadow-elevated flex flex-col overflow-y-auto transition-all duration-300`}>
       <div className={`${isCollapsed ? 'p-3' : 'p-6'} border-b border-primary-hover sticky top-0 bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-primary/75`}>
         <div className="flex items-center space-x-3">
-          <Gauge className="h-8 w-8 text-secondary shrink-0" />
+          <div className="w-16 h-16 flex shrink-0 items-center justify-center overflow-hidden -ml-2">
+            <img src="/logo.png" alt="RCTMS Logo" className="w-full h-full object-contain scale-125" />
+          </div>
           {!isCollapsed && (
             <div>
               <h1 className="text-lg font-semibold text-primary-foreground">

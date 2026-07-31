@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { DataCard } from '@/components/DataCard';
-import { Activity, Droplet, Shield } from 'lucide-react';
+import { Activity, Droplet, Shield, CheckCircle } from 'lucide-react';
 
 export const KpiStripOilCellar: React.FC = () => {
   const randomGrade = useMemo(() => {
@@ -42,7 +42,7 @@ export const KpiStripOilCellar: React.FC = () => {
 
   return (
     <div className="mt-6 px-6 pb-4">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 items-stretch">
         {/* Running Coil Data */}
         <DataCard title="Running Coil Data" icon={Activity}>
           <div className="space-y-1.5 text-xs">
@@ -83,50 +83,49 @@ export const KpiStripOilCellar: React.FC = () => {
           </div>
         </DataCard>
 
-        {/* Oil Cellar Status & Access Control - Attached as 3rd and 4th columns */}
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3">
-          {/* Oil Cellar Status */}
-          <DataCard title="Oil Cellar Status" icon={Shield}>
-            <div className="space-y-1.5 text-xs">
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Person w/o PPE:</span>
-                <span className="font-mono font-semibold">{systemData.safety.withoutPPE}</span>
-              </div>
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">No. Entered:</span>
-                <span className="font-mono font-semibold">{systemData.safety.totalEntered}</span>
-              </div>
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Avg. AQI:</span>
-                <span className="font-mono font-semibold">{systemData.safety.averageAQI}</span>
-              </div>
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Humidity:</span>
-                <span className="font-mono font-semibold">{systemData.safety.humidity}%</span>
-              </div>
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Temperature:</span>
-                <span className="font-mono font-semibold">{systemData.safety.temperature}°C</span>
-              </div>
+        {/* Oil Cellar Status */}
+        <DataCard title="Oil Cellar Status" icon={CheckCircle}>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Person w/o PPE:</span>
+              <span className="font-mono font-semibold">{systemData.safety.withoutPPE}</span>
             </div>
-          </DataCard>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">No. Entered:</span>
+              <span className="font-mono font-semibold">{systemData.safety.totalEntered}</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Avg. AQI:</span>
+              <span className="font-mono font-semibold">{systemData.safety.averageAQI}</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Humidity:</span>
+              <span className="font-mono font-semibold">{systemData.safety.humidity}%</span>
+            </div>
+            <div className="flex justify-between items-baseline">
+              <span className="text-muted-foreground">Temperature:</span>
+              <span className="font-mono font-semibold">{systemData.safety.temperature}°C</span>
+            </div>
+          </div>
+        </DataCard>
 
-          {/* Access Control */}
-          <DataCard title="Access Control" icon={Shield}>
-            <div className="space-y-1.5 text-xs">
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Fire Ext. System:</span>
-                <span className={`px-2 py-1 rounded text-xs font-bold ${systemData.accessControl.fireExtSystem === 'Active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+        {/* Access Control - Spans 2 columns to fill the gap */}
+        <div className="lg:col-span-2 flex">
+          <DataCard title="Access Control" icon={Shield} className="flex-1">
+            <div className="flex items-center justify-around gap-6 text-xs h-full">
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-muted-foreground font-medium">Fire Ext. System:</span>
+                <span className={`px-4 py-2 rounded text-sm font-bold ${systemData.accessControl.fireExtSystem === 'Active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                   {systemData.accessControl.fireExtSystem === 'Active' ? 'Active' : 'Inactive'}
                 </span>
               </div>
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Unsafe Acts:</span>
-                <span className="font-mono font-semibold">{systemData.accessControl.unsafeActs}</span>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-muted-foreground font-medium">Unsafe Acts:</span>
+                <span className="font-mono font-bold text-2xl">{systemData.accessControl.unsafeActs}</span>
               </div>
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Status:</span>
-                <span className="font-mono font-semibold">{systemData.accessControl.status}</span>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-muted-foreground font-medium">Status:</span>
+                <span className="font-mono font-bold text-lg">{systemData.accessControl.status}</span>
               </div>
             </div>
           </DataCard>
